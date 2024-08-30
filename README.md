@@ -1,4 +1,4 @@
-# xero-products
+# Xero Products
 
 
 
