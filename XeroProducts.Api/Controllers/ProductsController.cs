@@ -1,21 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
-using System.Web.Http;
 using XeroProducts.Models;
 
 namespace XeroProducts.Controllers
 {
-    [RoutePrefix("products")]
-    public class ProductsController : ApiController
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class ProductsController : ControllerBase
     {
-        [Route]
         [HttpGet]
         public Products GetAll()
         {
             return new Products();
         }
 
-        [Route]
         [HttpGet]
         public Products SearchByName(string name)
         {
@@ -28,12 +27,12 @@ namespace XeroProducts.Controllers
         {
             var product = new Product(id);
             if (product.IsNew)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new KeyNotFoundException();
+                //throw new HttpResponseException(HttpStatusCode.NotFound);
 
             return product;
         }
 
-        [Route]
         [HttpPost]
         public void Create(Product product)
         {
@@ -77,7 +76,8 @@ namespace XeroProducts.Controllers
         {
             var option = new ProductOption(id);
             if (option.IsNew)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new KeyNotFoundException();
+                //throw new HttpResponseException(HttpStatusCode.NotFound);
 
             return option;
         }
