@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace refactor_this
+namespace XeroProducts
 {
     public static class WebApiConfig
     {
