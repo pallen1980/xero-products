@@ -21,13 +21,17 @@ namespace XeroProducts.BL.Providers
                 };
             }
 
-            return new ProductOption(isNew: false)
+            var option = new ProductOption(isNew: false)
             {
                 Id = Guid.Parse(rdr["Id"].ToString()),
                 ProductId = Guid.Parse(rdr["ProductId"].ToString()),
                 Name = rdr["Name"].ToString(),
                 Description = (DBNull.Value == rdr["Description"]) ? null : rdr["Description"].ToString()
             };
+
+            conn.Close();
+
+            return option;
         }
 
 
@@ -47,7 +51,11 @@ namespace XeroProducts.BL.Providers
                 items.Add(this.GetProductOption(id));
             }
 
-            return new ProductOptions(items);
+            var options = new ProductOptions(items);
+
+            conn.Close();
+
+            return options;
         }
 
         public void Save(ProductOption productOption)
@@ -59,6 +67,7 @@ namespace XeroProducts.BL.Providers
 
             conn.Open();
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
         public void Delete(Guid productOptionId)
@@ -67,6 +76,7 @@ namespace XeroProducts.BL.Providers
             conn.Open();
             var cmd = new SqlCommand($"delete from productoption where id = '{productOptionId}'", conn);
             cmd.ExecuteReader();
+            conn.Close();
         }
     }
 }

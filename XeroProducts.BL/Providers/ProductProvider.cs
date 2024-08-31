@@ -16,9 +16,12 @@ namespace XeroProducts.BL.Providers
 
             var rdr = cmd.ExecuteReader();
             if (!rdr.Read())
+            {
+                conn.Close();
                 return null;
+            }
 
-            return new Product(isNew: false)
+            var product = new Product(isNew: false)
             {
                 Id = Guid.Parse(rdr["Id"].ToString()),
                 Name = rdr["Name"].ToString(),
@@ -26,6 +29,10 @@ namespace XeroProducts.BL.Providers
                 Price = decimal.Parse(rdr["Price"].ToString()),
                 DeliveryPrice = decimal.Parse(rdr["DeliveryPrice"].ToString())
             };
+
+            conn.Close();
+
+            return product;
         }
 
         public Products GetProducts()
@@ -51,6 +58,8 @@ namespace XeroProducts.BL.Providers
                 items.Add(GetProduct(id));
             }
 
+            conn.Close();
+
             return new Products(items);
         }
 
@@ -63,6 +72,7 @@ namespace XeroProducts.BL.Providers
 
             conn.Open();
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
         public void Delete(Guid productId)
@@ -74,6 +84,7 @@ namespace XeroProducts.BL.Providers
             conn.Open();
             var cmd = new SqlCommand($"delete from product where id = '{productId}'", conn);
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
     }
 }
