@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\XeroProducts.DAL\XeroProducts.DAL.csproj" />
     <ProjectReference Include="..\XeroProducts.Types\XeroProducts.Types.csproj" />
   </ItemGroup>
 

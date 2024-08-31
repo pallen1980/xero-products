@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XeroProducts.BL\XeroProducts.BL.csproj" />
+    <ProjectReference Include="..\XeroProducts.DAL.Sql\XeroProducts.DAL.Sql.csproj" />
+    <ProjectReference Include="..\XeroProducts.DAL\XeroProducts.DAL.csproj" />
     <ProjectReference Include="..\XeroProducts.Types\XeroProducts.Types.csproj" />
   </ItemGroup>
 
