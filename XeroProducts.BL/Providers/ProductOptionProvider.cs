@@ -1,14 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
-using XeroProducts.Models;
+using XeroProducts.BL.Helpers;
 using XeroProducts.Types;
 
-namespace XeroProducts.Api.Providers
+namespace XeroProducts.BL.Providers
 {
     public class ProductOptionProvider
     {
         public ProductOption GetProductOption(Guid id)
         {
-            var conn = Helpers.NewConnection();
+            var conn = SqlHelper.NewConnection();
             var cmd = new SqlCommand($"select * from productoption where id = '{id}'", conn);
             conn.Open();
 
@@ -36,7 +36,7 @@ namespace XeroProducts.Api.Providers
             var where = $"where productid = '{productId}'";
 
             var items = new List<ProductOption>();
-            var conn = Helpers.NewConnection();
+            var conn = SqlHelper.NewConnection();
             var cmd = new SqlCommand($"select id from productoption {where}", conn);
             conn.Open();
 
@@ -52,7 +52,7 @@ namespace XeroProducts.Api.Providers
 
         public void Save(ProductOption productOption)
         {
-            var conn = Helpers.NewConnection();
+            var conn = SqlHelper.NewConnection();
             var cmd = productOption.IsNew ?
                 new SqlCommand($"insert into productoption (id, productid, name, description) values ('{productOption.Id}', '{productOption.ProductId}', '{productOption.Name}', '{productOption.Description}')", conn) :
                 new SqlCommand($"update productoption set name = '{productOption.Name}', description = '{productOption.Description}' where id = '{productOption.Id}'", conn);
@@ -63,7 +63,7 @@ namespace XeroProducts.Api.Providers
 
         public void Delete(Guid productOptionId)
         {
-            var conn = Helpers.NewConnection();
+            var conn = SqlHelper.NewConnection();
             conn.Open();
             var cmd = new SqlCommand($"delete from productoption where id = '{productOptionId}'", conn);
             cmd.ExecuteReader();

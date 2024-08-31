@@ -1,9 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Reflection;
 
-namespace XeroProducts.Models
+namespace XeroProducts.BL.Helpers
 {
-    public class Helpers
+    public class SqlHelper
     {
         private const string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={DataDirectory}\Database.mdf;Integrated Security=True";
         
