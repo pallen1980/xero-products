@@ -23,7 +23,7 @@ namespace XeroProducts.Types
         public ProductOption(bool isNew = true)
         {
             Id = Guid.NewGuid();
-            IsNew = IsNew;
+            IsNew = isNew;
             Name = "";
             Description = "";
         }
