@@ -7,23 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using XeroProducts.BL.Providers;
 using XeroProducts.BL.UnitTests.Mocks;
+using XeroProducts.BL.UnitTests.TestData;
 using XeroProducts.Types;
 
 namespace XeroProducts.BL.UnitTests.Providers
 {
     internal class ProductOptionProviderTests
     {
-        [SetUp]
-        public void Setup()
-        {
-
-        }
 
         [Test]
         public async Task GetProductOption_WhenOptionExists_ReturnsOption()
         {
             //Arrange
-            var testData = CreateTestData();
+            var testData = ProductOptionTestData.Create(3);
 
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
 
@@ -49,7 +45,7 @@ namespace XeroProducts.BL.UnitTests.Providers
         public async Task GetProductOptions_WhenProductHasOptions_ReturnsOptions(int elementIndex)
         {
             //Arrange
-            var testData = CreateTestData();
+            var testData = ProductOptionTestData.Create(3);
 
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
 
@@ -73,7 +69,7 @@ namespace XeroProducts.BL.UnitTests.Providers
         public async Task Save_WhenOptionDoesNotExist_StoresNewOption()
         {
             //Arrange
-            var testData = CreateTestData();
+            var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
@@ -110,7 +106,7 @@ namespace XeroProducts.BL.UnitTests.Providers
         public async Task Save_WhenOptionExists_UpdatesExistingOption(int elementIndex)
         {
             //Arrange
-            var testData = CreateTestData();
+            var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
@@ -141,10 +137,10 @@ namespace XeroProducts.BL.UnitTests.Providers
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(7)]
-        public async Task DeleteProductOption_WhenProductExists_RemovesOption(int elementIndex)
+        public async Task DeleteProductOption_WhenOptionExists_RemovesOption(int elementIndex)
         {
             //Arrange
-            var testData = CreateTestData();
+            var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
@@ -162,32 +158,6 @@ namespace XeroProducts.BL.UnitTests.Providers
             Assert.AreNotEqual(initialTestDataCount, testData.Count);
             Assert.AreEqual(initialTestDataCount - 1, testData.Count);
             Assert.IsNull(testData.SingleOrDefault(td => td.Id == id));
-        }
-
-
-
-
-        private List<ProductOption> CreateTestData()
-        {
-            var productIds = new List<Guid>()
-            { 
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid()
-            };
-
-            return new List<ProductOption>
-            {
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 1 - Option 1", Description = "Test Description", ProductId = productIds.FirstOrDefault() },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 1 - Option 2", Description = "Test Description", ProductId = productIds.FirstOrDefault() },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 1 - Option 3", Description = "Test Description", ProductId = productIds.FirstOrDefault() },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 2 - Option 1", Description = "Test Description", ProductId = productIds.ElementAt(1) },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 2 - Option 2", Description = "Test Description", ProductId = productIds.ElementAt(1) },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 3 - Option 1", Description = "Test Description", ProductId = productIds.ElementAt(2) },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 3 - Option 2", Description = "Test Description", ProductId = productIds.ElementAt(2) },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 3 - Option 3", Description = "Test Description", ProductId = productIds.ElementAt(2) },
-                new ProductOption { Id = Guid.NewGuid(), Name = "Product 3 - Option 4", Description = "Test Description", ProductId = productIds.ElementAt(2) },
-            };
         }
     }
 }

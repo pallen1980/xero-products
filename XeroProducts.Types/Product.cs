@@ -21,7 +21,7 @@ namespace XeroProducts.Types
         public Product(bool isNew = true)
         {
             Id = Guid.NewGuid();
-            IsNew = IsNew;
+            IsNew = isNew;
             Name = "";
             Description = "";
             Price = 0.0M;
