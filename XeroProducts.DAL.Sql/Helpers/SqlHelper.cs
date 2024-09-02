@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Reflection;
 
-namespace XeroProducts.BL.Helpers
+namespace XeroProducts.DAL.Sql.Helpers
 {
     public class SqlHelper
     {

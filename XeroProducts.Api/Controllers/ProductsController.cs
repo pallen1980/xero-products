@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
+using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 using XeroProducts.Types;
 
@@ -10,27 +11,35 @@ namespace XeroProducts.Controllers
     [Route("[controller]/[action]")]
     public class ProductsController : ControllerBase
     {
-        private ProductProvider _productProvider => new ProductProvider();
-        private ProductOptionProvider _productOptionProvider => new ProductOptionProvider();
+        private IProductProvider _productProvider;
+        private IProductOptionProvider _productOptionProvider;
+
+        public ProductsController(  IProductProvider productProvider,
+                                    IProductOptionProvider productOptionProvider)
+        {
+            _productProvider = productProvider;
+            _productOptionProvider = productOptionProvider;
+        }
 
 
         [HttpGet]
-        public Products GetAll()
+        public async Task<Products> GetAll()
         {
-            return _productProvider.GetProducts();
+            return await _productProvider.GetProducts();
         }
 
         [HttpGet]
-        public Products SearchByName(string name)
+        public async Task<Products> SearchByName(string name)
         {
-            return _productProvider.GetProducts(name);
+            return await _productProvider.GetProducts(name);
         }
 
         [Route("{id}")]
         [HttpGet]
-        public Product GetProduct(Guid id)
+        public async Task<Product> GetProduct(Guid id)
         {
-            var product = _productProvider.GetProduct(id);
+            var product = await _productProvider.GetProduct(id);
+
             if (product.IsNew)
                 throw new KeyNotFoundException();
                 //throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -39,16 +48,16 @@ namespace XeroProducts.Controllers
         }
 
         [HttpPost]
-        public void Create(Product product)
+        public async Task Create(Product product)
         {
-            _productProvider.Save(product);
+            await _productProvider.Save(product);
         }
 
         [Route("{id}")]
         [HttpPut]
-        public void Update(Guid id, Product product)
+        public async Task Update(Guid id, Product product)
         {
-            var orig = _productProvider.GetProduct(id);
+            var orig = await _productProvider.GetProduct(id);
 
             orig.Name = product.Name;
             orig.Description = product.Description;
@@ -57,29 +66,30 @@ namespace XeroProducts.Controllers
 
             if (!orig.IsNew)
             {
-                _productProvider.Save(orig);
+               await _productProvider.Save(orig);
             }
         }
 
         [Route("{id}")]
         [HttpDelete]
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            _productProvider.Delete(id);
+            await _productProvider.Delete(id);
         }
 
         [Route("{productId}/options")]
         [HttpGet]
-        public ProductOptions GetOptions(Guid productId)
+        public async Task<ProductOptions> GetOptions(Guid productId)
         {
-            return _productOptionProvider.GetProductOptions(productId);
+            return await _productOptionProvider.GetProductOptions(productId);
         }
 
         [Route("{productId}/options/{id}")]
         [HttpGet]
-        public ProductOption GetOption(Guid productId, Guid id)
+        public async Task<ProductOption> GetOption(Guid productId, Guid id)
         {
-            var option = _productOptionProvider.GetProductOption(id);
+            var option = await _productOptionProvider.GetProductOption(id);
+            
             if (option.IsNew)
                 throw new KeyNotFoundException();
                 //throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -89,30 +99,31 @@ namespace XeroProducts.Controllers
 
         [Route("{productId}/options")]
         [HttpPost]
-        public void CreateOption(Guid productId, ProductOption option)
+        public async Task CreateOption(Guid productId, ProductOption option)
         {
             option.ProductId = productId;
-            _productOptionProvider.Save(option);
+            
+            await _productOptionProvider.Save(option);
         }
 
         [Route("{productId}/options/{id}")]
         [HttpPut]
-        public void UpdateOption(Guid id, ProductOption option)
+        public async Task UpdateOption(Guid id, ProductOption option)
         {
-            var orig = _productOptionProvider.GetProductOption(id);
+            var orig = await _productOptionProvider.GetProductOption(id);
 
             orig.Name = option.Name;
             orig.Description = option.Description;
 
             if (!orig.IsNew)
-                _productOptionProvider.Save(orig);
+                await _productOptionProvider.Save(orig);
         }
 
         [Route("{productId}/options/{id}")]
         [HttpDelete]
-        public void DeleteOption(Guid id)
+        public async Task DeleteOption(Guid id)
         {
-            _productOptionProvider.Delete(id);
+            await _productOptionProvider.Delete(id);
         }
     }
 }
