@@ -13,3 +13,4 @@ Release Notes:
 20240831 - New Data Access Layer (DAL) to remove data store interaction from BL (separation of concerns)
 20240831 - Implemented IoC across BL and DAL to support future extension and testing
 20240831 - Altered all methods to run asynchronously (for faster performance/future multi-threading improvements)
+20240902 - Added covering Unit Tests for BL
