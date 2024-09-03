@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net;
 using XeroProducts.BL.Interfaces;
-using XeroProducts.BL.Providers;
-using XeroProducts.Types;
 
 namespace XeroProducts.Controllers
 {

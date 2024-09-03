@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using XeroProducts.BL.Interfaces;
-using XeroProducts.BL.Providers;
-using XeroProducts.Types;
 
 [ApiController]
 [Route("api/product")]
