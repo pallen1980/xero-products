@@ -33,6 +33,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateProductFormModel productModel)
     {
         var product = productModel.ToType();
@@ -44,6 +45,7 @@ public class ProductController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductViewModel>> Update(Guid id, [FromBody] UpdateProductFormModel product)
     {
         var orig = await _productProvider.GetProduct(id);
@@ -53,9 +55,13 @@ public class ProductController : ControllerBase
         orig.Price = product.Price;
         orig.DeliveryPrice = product.DeliveryPrice;
 
-        if (!orig.IsNew)
+        if (orig != null)
         {
             await _productProvider.Save(orig);
+        }
+        else
+        {
+            return NotFound(id);
         }
 
         return Ok(new ProductViewModel(orig));
@@ -88,6 +94,7 @@ public class ProductController : ControllerBase
 
     [HttpPost]
     [Route("{productId}/option")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductOptionViewModel>> CreateOption(Guid productId, [FromBody] CreateProductOptionFormModel option)
     {
         var productOption = option.ToType(productId);
@@ -99,6 +106,7 @@ public class ProductController : ControllerBase
 
     [HttpPut]
     [Route("{productId}/option/{id}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductOptionViewModel>> UpdateOption(Guid productId, Guid id, [FromBody] UpdateProductOptionFormModel option)
     {
         var orig = await _productOptionProvider.GetProductOption(id);
@@ -108,6 +116,8 @@ public class ProductController : ControllerBase
 
         if (!orig.IsNew)
             await _productOptionProvider.Save(orig);
+        else
+            return NotFound(new { ProductId = productId, Id = id });
 
         return Ok(new ProductOptionViewModel(orig));
     }

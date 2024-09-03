@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 using XeroProducts.DAL;
@@ -12,10 +13,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// DependencyInjection...
 builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
 builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
 builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
 builder.Services.AddScoped<IProductProvider, ProductProvider>();
+
+// Create our own validation filter to manually check modelstate and stop the automatic modelstate sending 400 responses for any validation failure
+builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 var app = builder.Build();
 
