@@ -18,3 +18,4 @@ Release Notes:
 20240904 - Added validation for POSTed models (and ability to return more accurate status codes when validation fails)
 20240904 - Added support for Http Status Codes when returning from endpoints  
 20240904 - Added centralised exception handling
+20240904 - Added Jwt Token-based Auth
