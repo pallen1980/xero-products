@@ -23,6 +23,10 @@ builder.Services.AddScoped<IProductProvider, ProductProvider>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
+// Create our own central point for handling exceptions
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(); //for standardised error responses
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

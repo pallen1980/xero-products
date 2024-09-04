@@ -18,12 +18,23 @@ namespace XeroProducts.Controllers
             _productOptionProvider = productOptionProvider;
         }
 
+        /// <summary>
+        /// Grab All Products
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         [HttpGet]
         public async Task<ActionResult<ProductsViewModel>> GetAll()
         {
             return Ok(new ProductsViewModel(await _productProvider.GetProducts()));
         }
 
+
+        /// <summary>
+        /// Return all any product that contains the given string
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{name}")]
         public async Task<ActionResult<ProductsViewModel>> SearchByName(string name)
@@ -31,6 +42,11 @@ namespace XeroProducts.Controllers
             return Ok(new ProductsViewModel(await _productProvider.GetProducts(name)));
         }
 
+        /// <summary>
+        /// Return all the options for the given product ID
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{productId}/options")]
         public async Task<ActionResult<ProductOptionsViewModel>> GetOptions(Guid productId)
