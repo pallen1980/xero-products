@@ -14,3 +14,6 @@ Release Notes:
 20240831 - Implemented IoC across BL and DAL to support future extension and testing
 20240831 - Altered all methods to run asynchronously (for faster performance/future multi-threading improvements)
 20240902 - Added covering Unit Tests for BL
+20240904 - Further MVC model separation (removed types from use in web api endpoint params/endpoints now use their own models - for reduced data transfer/performance/separation-of-concerns)
+20240904 - Added validation for POSTed models (and ability to return more accurate status codes when validation fails)
+20240904 - Added support for Http Status Codes when returning from endpoints

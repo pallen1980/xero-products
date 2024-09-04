@@ -24,4 +24,9 @@
     <ProjectReference Include="..\XeroProducts.Types\XeroProducts.Types.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="ActionFilters\" />
+  </ItemGroup>
+
 </Project>
