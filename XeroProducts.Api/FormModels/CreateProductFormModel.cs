@@ -3,6 +3,10 @@ using XeroProducts.Types;
 
 public class CreateProductFormModel : ProductModel
 {
+    /// <summary>
+    /// Convert this FormModel to a Type
+    /// </summary>
+    /// <returns></returns>
     public Product ToType()
     {
         return new Product()
