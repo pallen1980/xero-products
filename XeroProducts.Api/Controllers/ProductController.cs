@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using XeroProducts.BL.Interfaces;
 
@@ -44,6 +45,7 @@ public class ProductController : ControllerBase
     /// <param name="productModel"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateProductFormModel productModel)
     {
@@ -64,6 +66,7 @@ public class ProductController : ControllerBase
     /// <param name="product"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize]
     [Route("{id}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductViewModel>> Update(Guid id, [FromBody] UpdateProductFormModel product)
@@ -96,6 +99,7 @@ public class ProductController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete]
+    [Authorize]
     [Route("{id}")]
     public async Task<ActionResult<Guid>> Delete(Guid id)
     {
@@ -140,6 +144,7 @@ public class ProductController : ControllerBase
     /// <param name="option"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize]
     [Route("{productId}/option")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductOptionViewModel>> CreateOption(Guid productId, [FromBody] CreateProductOptionFormModel option)
@@ -162,6 +167,7 @@ public class ProductController : ControllerBase
     /// <param name="option"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize]
     [Route("{productId}/option/{id}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<ActionResult<ProductOptionViewModel>> UpdateOption(Guid productId, Guid id, [FromBody] UpdateProductOptionFormModel option)
@@ -191,8 +197,9 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [Route("{productId}/options/{id}")]
     [HttpDelete]
+    [Authorize]
+    [Route("{productId}/options/{id}")]
     public async Task<ActionResult<Guid>> DeleteOption(Guid id)
     {
         //delete the matching option

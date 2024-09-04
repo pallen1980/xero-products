@@ -1,6 +1,6 @@
 ﻿using XeroProducts.Types;
 
-namespace XeroProducts.DAL
+namespace XeroProducts.DAL.Interfaces
 {
     public interface IProductDALProvider
     {

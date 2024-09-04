@@ -1,5 +1,5 @@
 ﻿using XeroProducts.BL.Interfaces;
-using XeroProducts.DAL;
+using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
 namespace XeroProducts.BL.Providers
@@ -9,7 +9,7 @@ namespace XeroProducts.BL.Providers
         private readonly IProductDALProvider _productDALProvider;
         private readonly IProductOptionProvider _productOptionProvider;
 
-        public ProductProvider( IProductDALProvider productDALProvider,
+        public ProductProvider(IProductDALProvider productDALProvider,
                                 IProductOptionProvider productOptionProvider)
         {
             _productDALProvider = productDALProvider;

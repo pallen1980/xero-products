@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XeroProducts.DAL;
+using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
 namespace XeroProducts.BL.UnitTests.Mocks

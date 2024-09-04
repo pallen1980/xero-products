@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XeroProducts.Types;
 
-namespace XeroProducts.DAL
+namespace XeroProducts.DAL.Interfaces
 {
     public interface IProductOptionDALProvider
     {

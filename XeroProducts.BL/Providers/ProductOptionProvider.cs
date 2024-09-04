@@ -1,5 +1,5 @@
 ﻿using XeroProducts.BL.Interfaces;
-using XeroProducts.DAL;
+using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
 namespace XeroProducts.BL.Providers
