@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XeroProducts.BL.Interfaces;
 
-namespace XeroProducts.BL.Interfaces
+namespace XeroProducts.BL.Authentication
 {
     public class AuthProvider : IAuthProvider
     {
