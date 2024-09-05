@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XeroProducts.BL.Interfaces;
 
-namespace XeroProducts.BL.Authentication
+namespace XeroProducts.BL.Security
 {
     public class JwtTokenProvider : IJwtTokenProvider
     {

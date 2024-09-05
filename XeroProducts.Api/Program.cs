@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using XeroProducts.BL.Authentication;
+using XeroProducts.BL.Security;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 using XeroProducts.DAL.Interfaces;

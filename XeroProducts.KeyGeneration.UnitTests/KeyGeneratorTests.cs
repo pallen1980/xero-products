@@ -1,6 +1,6 @@
-namespace XeroProducts.KeyGenerator.UnitTests
+namespace XeroProducts.KeyGeneration.UnitTests
 {
-    internal class KeyGeneratorTests
+    internal class KeyGenerationTests
     {
 
         [Test]

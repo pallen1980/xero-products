@@ -1,3 +1,3 @@
 @echo off
 
-call .\XeroProducts.GenerateKey.Console\bin\Debug\net8.0\XeroProducts.GenerateKey.Console.exe
+call .\XeroProducts.KeyGeneration.Console\bin\Debug\net8.0\XeroProducts.KeyGeneration.Console.exe

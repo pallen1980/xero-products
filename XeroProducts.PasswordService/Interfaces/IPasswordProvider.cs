@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XeroProducts.BL.Interfaces
+namespace XeroProducts.PasswordService.Interfaces
 {
-    public interface IAuthProvider
+    public interface IPasswordProvider
     {
         public byte[] GenerateSalt();
 
