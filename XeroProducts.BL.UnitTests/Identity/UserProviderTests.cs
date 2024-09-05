@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using XeroProducts.BL.CustomExceptions;
 using XeroProducts.BL.Dtos;
 using XeroProducts.BL.Identity;
 using XeroProducts.BL.UnitTests.Mocks;
@@ -25,7 +28,6 @@ namespace XeroProducts.BL.UnitTests.Identity
             var iPasswordProviderMock = IPasswordProviderMock.GetMock();
             var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
             
-
             var newUser = new UserDto()
             {
                 FirstName = "Joe",
@@ -46,5 +48,36 @@ namespace XeroProducts.BL.UnitTests.Identity
             Assert.AreNotEqual(originalTestDataCount, testData.Count);
             Assert.AreEqual(originalTestDataCount + 1, testData.Count);
         }
+
+        [Test]
+        public async Task CreateUser_WhenUsernameExists_RaisesException()
+        {
+            //Arrange
+            var duplicateUserName = "ADuplicateUserName";
+
+            var testData = new List<Types.User>()
+            {
+                new Types.User() { Id = Guid.NewGuid(), Username = duplicateUserName.ToString() }
+            };
+
+            var newUser = new UserDto()
+            {
+                FirstName = "Joe",
+                LastName = "Bloggs",
+                Email = "joe.bloggs@acme.com",
+                Username = duplicateUserName.ToString(),
+                Password = "password1"
+            };
+
+            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+
+            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+
+            //Act/Assert
+            Assert.ThrowsAsync<AlreadyExistsException>(() => sut.CreateUser(newUser));
+        }
+
+
     }
 }

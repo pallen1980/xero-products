@@ -69,10 +69,10 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         
         ValidateAudience = true,
-        ValidAudience = builder.Configuration.GetValue<string>("Auth__JwtConfig__ValidAudience"),
+        ValidAudience = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
         
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration.GetValue<string>("Auth__JwtConfig__ValidIssuer"),
+        ValidIssuer = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
     };
 });
 
