@@ -10,6 +10,11 @@ namespace XeroProducts.KeyGeneration
 {
     public class KeyGenerator
     {
+        /// <summary>
+        /// Generate a random sequence of values. the value returned will have the same length in bytes as the given argument
+        /// </summary>
+        /// <param name="byteCount"></param>
+        /// <returns></returns>
         public static byte[] GenerateKeyBytes(int byteCount = 32)
         {
             using (var rng = RandomNumberGenerator.Create())
@@ -22,6 +27,11 @@ namespace XeroProducts.KeyGeneration
             }
         }
 
+        /// <summary>
+        /// Generate a cryptographic random number and format it to base64
+        /// </summary>
+        /// <param name="byteCount"></param>
+        /// <returns></returns>
         public static string GenerateKey(int byteCount = 32)
         {
             return Convert.ToBase64String(GenerateKeyBytes(byteCount));
