@@ -1,4 +1,4 @@
-﻿using XeroProducts.GenerateKey;
+﻿using XeroProducts.KeyGenerator;
 
 Console.WriteLine(KeyGenerator.GenerateKey(256));
 

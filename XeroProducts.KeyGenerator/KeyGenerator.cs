@@ -5,11 +5,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XeroProducts.GenerateKey
+namespace XeroProducts.KeyGenerator
 {
-    internal class KeyGenerator
+    public class KeyGenerator
     {
-        internal static string GenerateKey(int noOfBytes = 32)
+        public static string GenerateKey(int noOfBytes = 32)
         {
             using RandomNumberGenerator rng = RandomNumberGenerator.Create();
 
