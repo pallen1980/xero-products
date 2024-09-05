@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XeroProducts.GenerateKey.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XeroProducts.KeyGenerator", "XeroProducts.KeyGenerator\XeroProducts.KeyGenerator.csproj", "{2A5359BD-1EC0-4281-9B16-920F5846B3C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XeroProducts.KeyGenerator.UnitTests", "XeroProducts.KeyGenerator.UnitTests\XeroProducts.KeyGenerator.UnitTests.csproj", "{0EFAB3EB-F621-4468-8953-6B94B60C95FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{2A5359BD-1EC0-4281-9B16-920F5846B3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A5359BD-1EC0-4281-9B16-920F5846B3C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A5359BD-1EC0-4281-9B16-920F5846B3C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EFAB3EB-F621-4468-8953-6B94B60C95FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFAB3EB-F621-4468-8953-6B94B60C95FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFAB3EB-F621-4468-8953-6B94B60C95FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFAB3EB-F621-4468-8953-6B94B60C95FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{53EE9A04-D614-476E-BAFE-A5875FEA9F4B} = {9BBA1EB8-19F3-4DFA-B1A6-F46112AAAD41}
 		{F56F823F-3382-4159-8F8C-A96E805AC849} = {0B7FACA9-43B0-4A8D-8F10-403E6BB81214}
 		{2A5359BD-1EC0-4281-9B16-920F5846B3C7} = {0B7FACA9-43B0-4A8D-8F10-403E6BB81214}
+		{0EFAB3EB-F621-4468-8953-6B94B60C95FB} = {9BBA1EB8-19F3-4DFA-B1A6-F46112AAAD41}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E42FD51E-27C8-404B-972F-D325130080BB}

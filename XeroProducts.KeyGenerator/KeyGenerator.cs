@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,21 @@ namespace XeroProducts.KeyGenerator
 {
     public class KeyGenerator
     {
-        public static string GenerateKey(int noOfBytes = 32)
+        public static byte[] GenerateKeyBytes(int byteCount = 32)
         {
-            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                byte[] key = new byte[byteCount];
+                
+                rng.GetBytes(key);
 
-            byte[] key = new byte[noOfBytes];
-            rng.GetBytes(key);
+                return key;
+            }
+        }
 
-            return Convert.ToBase64String(key);
+        public static string GenerateKey(int byteCount = 32)
+        {
+            return Convert.ToBase64String(GenerateKeyBytes(byteCount));
         }
     }
 }
