@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using XeroProducts.DAL.Interfaces;
 using XeroProducts.DAL.Sql.Helpers;
 using XeroProducts.Types;
 

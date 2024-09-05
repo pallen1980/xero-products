@@ -16,6 +16,11 @@ public class GlobalExceptionHandler : IExceptionHandler
         //set the properties appropriatley for each exception we're looking for
         switch (exception)
         {
+            case UnauthorizedAccessException:
+                errorResponse.Status = (int)HttpStatusCode.Unauthorized;
+                errorResponse.Title = exception.GetType().Name;
+                break;
+
             case KeyNotFoundException:
                 errorResponse.Status = (int)HttpStatusCode.NotFound;
                 errorResponse.Title = exception.GetType().Name;
