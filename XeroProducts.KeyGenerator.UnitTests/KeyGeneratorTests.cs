@@ -15,7 +15,7 @@ namespace XeroProducts.KeyGenerator.UnitTests
             Assert.IsNotNull(result);
             Assert.IsNotEmpty(result);
             Assert.IsInstanceOf<byte[]>(result);
-            Assert.Equals(32, result.Length);
+            Assert.AreEqual(32, result.Length);
         }
 
         [Test]
@@ -29,13 +29,13 @@ namespace XeroProducts.KeyGenerator.UnitTests
             //Arrange
 
             //Act
-            var result = KeyGenerator.GenerateKeyBytes();
+            var result = KeyGenerator.GenerateKeyBytes(byteCount);
 
             //Assert
             Assert.IsNotNull(result);
             Assert.IsNotEmpty(result);
             Assert.IsInstanceOf<byte[]>(result);
-            Assert.Equals(byteCount, result.Length);
+            Assert.AreEqual(byteCount, result.Length);
         }
 
         [Test]
