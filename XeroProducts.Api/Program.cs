@@ -7,6 +7,9 @@ using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.DAL.Sql.Providers;
+using XeroProducts.BL.Identity;
+using XeroProducts.PasswordService.Interfaces;
+using XeroProducts.PasswordService.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,11 +39,17 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // DependencyInjection...
+// - DAL
 builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
 builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
+builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+// - BL
 builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
 builder.Services.AddScoped<IProductProvider, ProductProvider>();
+builder.Services.AddScoped<IUserProvider, UserProvider>();
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
+// - Tools
+builder.Services.AddScoped<IPasswordProvider, PasswordProvider>();
 
 // Create our own validation filter to manually check modelstate and stop the automatic modelstate sending 400 responses for any validation failure
 builder.Services.AddScoped<ValidationFilterAttribute>();

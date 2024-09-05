@@ -30,8 +30,11 @@ namespace XeroProducts.BL.UnitTests.Mocks
                     return Task.FromResult(u.Id);
                 });
 
+            mock.Setup(m => m.GetUser(It.IsAny<Guid>()))
+                .Returns((Guid id) => Task.FromResult(testData.SingleOrDefault(td => td.Id == id)));
+
             mock.Setup(m => m.GetUser(It.IsAny<string>()))
-                .Callback((string username) => testData.Single(td => td.Username.Trim().ToLower() == username.Trim().ToLower()));
+                .Returns((string username) => Task.FromResult(testData.SingleOrDefault(td => td.Username.Trim().ToLower() == username.Trim().ToLower())));
 
             mock.Setup(m => m.UpdateUser(It.IsAny<User>()))
                 .Callback((User u) =>

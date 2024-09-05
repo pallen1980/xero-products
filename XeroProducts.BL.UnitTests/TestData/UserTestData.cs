@@ -24,7 +24,8 @@ namespace XeroProducts.BL.UnitTests.TestData
                         Email = string.Format("Email{0}", i),
                         Username = string.Format("Username{0}", i),
                         HashedPassword = "abc123",
-                        Salt = "def456"
+                        Salt = "def456",
+                        IsSuperAdmin = (i == 0) //first user is super admin
                     });
             }
 

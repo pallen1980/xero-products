@@ -25,6 +25,17 @@ namespace XeroProducts.BL.Identity
             _userDALProvider = userDALProvider;
         }
 
+        public async Task<UserDto> GetUser(Guid id)
+        {
+            var user = await _userDALProvider.GetUser(id);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"No matching user found with ID: {id}");
+            }
+
+            return new UserDto(user);
+        }
 
         public async Task<Guid> CreateUser(UserDto userDto)
         {
@@ -57,9 +68,55 @@ namespace XeroProducts.BL.Identity
             });
         }
 
-        public Task<Guid> VerifyUserCredentials(string username, string password)
+        public async Task DeleteUser(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _userDALProvider.GetUser(id);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"Delete Failed: No matching user found with ID: {id}");
+            }
+
+            if (user.IsSuperAdmin) 
+            {
+                throw new SuperAdminDeletionAttemptException("Delete Failed: You cannot remove the super admin account. This risks the system becoming un-usable.");
+            }
+
+            await _userDALProvider.DeleteUser(id);
+        }
+
+        public async Task<UserDto?> VerifyUserCredentials(string username, string password)
+        {
+            // Attempt to match the user on username
+            var user = await _userDALProvider.GetUser(username);
+
+            // If there is not matching username, return null (give less feedback when verifying usernames/passwords in the system)
+            if (user == null)
+            {
+                return null;
+            }
+
+            // Convert the stored salt and entered password to byte arrays
+            var storedSaltBytes = Convert.FromBase64String(user.Salt);
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
+
+            // Concatenate entered password and stored salt
+            var saltedPassword = new byte[passwordBytes.Length + storedSaltBytes.Length];
+            Buffer.BlockCopy(passwordBytes, 0, saltedPassword, 0, passwordBytes.Length);
+            Buffer.BlockCopy(storedSaltBytes, 0, saltedPassword, passwordBytes.Length, storedSaltBytes.Length);
+
+            // Hash the concatenated value
+            var enteredPasswordHash = _passwordProvider.HashPassword(password, storedSaltBytes);
+
+            // Compare the entered password hash with the stored hash
+            if (enteredPasswordHash != user.HashedPassword)
+            {
+                //Password does not match
+                return null;
+            }
+
+            // Username/Password match, return the user
+            return new UserDto(user);
         }
     }
 }

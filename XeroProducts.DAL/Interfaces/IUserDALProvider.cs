@@ -17,6 +17,13 @@ namespace XeroProducts.DAL.Interfaces
         Task<bool> UserExists(string username);
 
         /// <summary>
+        /// Get a user by their ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        Task<User> GetUser(Guid Id);
+
+        /// <summary>
         /// Get a user by their username
         /// </summary>
         /// <param name="id"></param>

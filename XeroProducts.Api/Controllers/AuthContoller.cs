@@ -3,27 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 using XeroProducts.BL.Interfaces;
 
 [ApiController]
-[Route("api/product")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IJwtTokenProvider _jwtTokenProvider;
-    public AuthController(IJwtTokenProvider jwtTokenProvider)
+    private readonly IUserProvider _userProvider;
+
+    public AuthController(IUserProvider userProvider,
+                          IJwtTokenProvider jwtTokenProvider)
     {
+        _userProvider = userProvider;
         _jwtTokenProvider = jwtTokenProvider;
     }
 
     [AllowAnonymous]
-    [HttpPost("Authenticate")]
+    [HttpPost("login")]
     public async Task<ActionResult<string>> Login([FromBody] UserCredential userCredential)
     {
-        //TODO: Add sign-in logic here (match user/pass against credentials in DB)
+        // Attempt to match usercredentials to a user
+        var user = await _userProvider.VerifyUserCredentials(userCredential.Username, userCredential.Password);
 
-
-
-        var hasLogonSucceeded = true;
-      
-        //If the logon failed, raise an unauthorised exception
-        if (!hasLogonSucceeded)
+        // No matching user... raise an unauthorised exception
+        if (user == null)
         {
             throw new UnauthorizedAccessException();
         }

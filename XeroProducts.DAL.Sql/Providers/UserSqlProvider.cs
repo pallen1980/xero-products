@@ -34,11 +34,11 @@ namespace XeroProducts.DAL.Sql.Providers
             return true;
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User> GetUser(Guid Id)
         {
             using (var connection = SqlHelper.NewConnection())
             {
-                var sql = $"SELECT [ID], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt] FROM [user] WHERE LOWER([Username]) = '{username.ToLower().Trim()}'";
+                var sql = $"SELECT [ID], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] FROM [user] WHERE [Id] = '{Id}'";
                 var cmd = new SqlCommand(sql, connection);
                 await connection.OpenAsync();
 
@@ -56,7 +56,36 @@ namespace XeroProducts.DAL.Sql.Providers
                     Email = rdr["Email"].ToString(),
                     Username = rdr["Username"].ToString(),
                     HashedPassword = rdr["HashedPassword"].ToString(),
-                    Salt = rdr["Salt"].ToString()
+                    Salt = rdr["Salt"].ToString(),
+                    IsSuperAdmin = bool.Parse(rdr["IsSuperAdmin"].ToString())
+                };
+            }
+        }
+
+        public async Task<User> GetUser(string username)
+        {
+            using (var connection = SqlHelper.NewConnection())
+            {
+                var sql = $"SELECT [ID], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] FROM [user] WHERE LOWER([Username]) = '{username.ToLower().Trim()}'";
+                var cmd = new SqlCommand(sql, connection);
+                await connection.OpenAsync();
+
+                var rdr = await cmd.ExecuteReaderAsync();
+                if (!await rdr.ReadAsync())
+                {
+                    return null;
+                }
+
+                return new Types.User()
+                {
+                    Id = Guid.Parse(rdr["Id"].ToString()),
+                    FirstName = rdr["FirstName"].ToString(),
+                    LastName = rdr["LastName"].ToString(),
+                    Email = rdr["Email"].ToString(),
+                    Username = rdr["Username"].ToString(),
+                    HashedPassword = rdr["HashedPassword"].ToString(),
+                    Salt = rdr["Salt"].ToString(),
+                    IsSuperAdmin = bool.Parse(rdr["IsSuperAdmin"].ToString())
                 };
             }
         }
@@ -65,8 +94,8 @@ namespace XeroProducts.DAL.Sql.Providers
         {
             using (var connection = SqlHelper.NewConnection())
             {
-                var sql = $"INSERT INTO [user] ([Id], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt])"
-                        + $"VALUES ('{user.Id}', '{user.FirstName.Trim()}', '{user.LastName.Trim()}', '{user.Email.Trim()}', '{user.Username.Trim()}', '{user.HashedPassword}', '{user.Salt}' )";
+                var sql = $"INSERT INTO [user] ([Id], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] )"
+                        + $"VALUES ('{user.Id}', '{user.FirstName.Trim()}', '{user.LastName.Trim()}', '{user.Email.Trim()}', '{user.Username.Trim()}', '{user.HashedPassword}', '{user.Salt}', 0 )";
                 var cmd = new SqlCommand(sql, connection);
                 await connection.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();
