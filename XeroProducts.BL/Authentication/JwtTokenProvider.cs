@@ -38,14 +38,15 @@ namespace XeroProducts.BL.Authentication
                         new Claim(ClaimTypes.NameIdentifier, userName)
                     }
                 ),
-                Expires = DateTime.UtcNow.AddMinutes(30),
-                Audience = _configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
-                Issuer = _configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
+                
+                IssuedAt = DateTime.UtcNow,
+                Issuer = _configuration.GetValue<string>("Auth__JwtConfig__ValidIssuer"),
 
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(keyBytes),
-                    SecurityAlgorithms.HmacSha256Signature
-                )
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                
+                Audience = _configuration.GetValue<string>("Auth__JwtConfig__ValidAudience"),
+                
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -60,7 +61,7 @@ namespace XeroProducts.BL.Authentication
         /// <returns></returns>
         public static byte[] GetJwtKeyBytes(IConfiguration config)
         {
-            var key = config.GetValue<string>("Auth:JwtConfig:Key");
+            var key = config.GetValue<string>("Auth__JwtConfig__Key");
 
             return Encoding.ASCII.GetBytes(key);
         }

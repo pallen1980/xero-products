@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using XeroProducts.BL.Authentication;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
@@ -15,22 +13,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 
 //Add OpenAPI Documentation...
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
+    // Swagger/OpenAPI https://aka.ms/aspnetcore/swashbuckle
+
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Xero Products API", Version = "v1" });
 
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Please enter the JWT token",
+        Description = "Please enter a valid JWT token",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
-        Scheme = "bearer"
+        Scheme = "Bearer"
     });
 
     option.OperationFilter<AuthResponseOperationFilter>();
@@ -70,10 +69,10 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         
         ValidateAudience = true,
-        ValidAudience = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
+        ValidAudience = builder.Configuration.GetValue<string>("Auth__JwtConfig__ValidAudience"),
         
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
+        ValidIssuer = builder.Configuration.GetValue<string>("Auth__JwtConfig__ValidIssuer"),
     };
 });
 
