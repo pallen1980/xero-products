@@ -17,7 +17,7 @@ You'll need to install the following to build/run the solution...
 1. Clone & Pull the Repo  
 2. Open a cmd prompt to the root folder  
 3. Run... Build Solution.bat  
-4. Generate your own unique key (for Jwt Auth), Run... .\XeroProducts.GenerateKey\bin\Debug\net8.0\XeroProducts.GenerateKey.exe  
+4. Generate your own unique key (for Jwt Auth), Run... Generate Key.bat
 5. Add the following environment variables...
   - Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}
   - Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE}
@@ -40,5 +40,5 @@ You'll need to install the following to build/run the solution...
 20240904 - Further MVC model separation (removed types from use in web api endpoint params/endpoints now use their own models - for reduced data transfer/performance/separation-of-concerns)  
 20240904 - Added validation for POSTed models (and ability to return more accurate status codes when validation fails)
 20240904 - Added support for Http Status Codes when returning from endpoints  
-20240904 - Added centralised exception handling
-20240904 - Added Jwt Token-based Auth
+20240904 - Added centralised exception handling  
+20240904 - Added Jwt Token-based Auth  

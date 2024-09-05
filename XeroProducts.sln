@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XeroProducts.BL.UnitTests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{0B7FACA9-43B0-4A8D-8F10-403E6BB81214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XeroProducts.GenerateKey", "XeroProducts.GenerateKey\XeroProducts.GenerateKey.csproj", "{F56F823F-3382-4159-8F8C-A96E805AC849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XeroProducts.GenerateKey.Console", "XeroProducts.GenerateKey.Console\XeroProducts.GenerateKey.Console.csproj", "{F56F823F-3382-4159-8F8C-A96E805AC849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
