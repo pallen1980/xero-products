@@ -7,6 +7,8 @@ This improved version of the Web API retains the existing functionality to allow
 
 - Up-versioned/Re-wrote for more modern .NET v8.0 to provider better future support/longevity (inc. all the standard points that go with newer dotnet versions. eg. performance, compatibility, security, support, extensibility, etc).  
 - Added OpenAPI/Swagger support for easier integration testing and documentation of API endpoints  
+- Model Validation against all endpoints to provide greater feedback to users of the API
+- Central Validation/Exception handling to allow faster extensible development
 - Support for HTTPS for increase security  
 - Implemented MVVM & Repository Patterns for cleaner code design (Web API Front-End + BL mid-logic layer + DAL for data access)  
 - DI/IoC and Inheritance among providers for greater extensibility, modular/re-use (SOLID principles) & support for unit testing  
