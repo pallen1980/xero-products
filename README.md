@@ -5,19 +5,19 @@ Xero Take-home project:- Refactoring a small Web/REST API.
 
 This improved version of the Web API retains the existing functionality to allow users to perform CRUD operations against a product data source, as well as the following...  
 
-- Up-versioned/Re-wrote for more modern .NET v8.0 to provider better future support/longevity (inc. all the standard points that go with newer dotnet versions. eg. performance, compatibility, security, support, extensibility, etc).  
+- Up-versioned/Re-wrote for modern .NET v8.0 to provide better future support/longevity (inc. all the standard points that go with newer dotnet versions. eg. performance, compatibility, security, support, extensibility, etc).  
 - Added OpenAPI/Swagger support for easier integration testing and documentation of API endpoints  
 - Model Validation against all endpoints to provide greater feedback to users of the API
 - Central Validation/Exception handling to allow faster extensible development
-- Support for HTTPS for increase security  
+- Support for HTTPS for increased security  
 - Implemented MVVM & Repository Patterns for cleaner code design (Web API Front-End + BL mid-logic layer + DAL for data access)  
 - DI/IoC and Inheritance among providers for greater extensibility, modular/re-use (SOLID principles) & support for unit testing  
-- Covering Unit Tests across the BL to support any CI/CD and QA process/policies  
-- CI: GitHub Deployment action to build & test when any branch/PR are pushed into main  
-- Identity support via JWT token-based to support distributed authentication  
+- Covering Unit Tests across the BL to support CI/CD and QA processes/policies  
+- CI: Added GitHub Deployment action to build & test when any branch/PR are pushed into main  
+- Identity support via basic JWT tokens, to support distributed authentication  
 - Native logon support using SHA512 encrypted/hashed passwords  
-- User Management (CRUD for users)  
-- Authorization: Some endpoints are locked down unless signed-in/authed  
+- User Management (CRUD for users)   
+- Authorization: Some endpoints are now locked down unless signed-in/authed  
 - ORM support with EntityFramework: Greater DB abstraction, faster dev-time, and out-of-the-box support for more DB platforms  
 - Easy to understand fully-commented clean code  
 
