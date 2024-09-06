@@ -1,15 +1,31 @@
 # Xero Products
 ---------------
 
-This simple Web API allows users to perform CRUD operations against a product data source.  
+Xero Take-home project:- Refactoring a small Web/REST API.  
 
-It incorporates JWT token-based authentication for Identity support.  
+This improved version of the Web API retains the existing functionality to allow users to perform CRUD operations against a product data source, as well as the following...  
+
+- Up-versioned/Re-wrote for more modern .NET v8.0 to provider better future support/longevity (inc. all the standard points that go with newer dotnet versions. eg. performance, compatibility, security, support, extensibility, etc).  
+- Added OpenAPI/Swagger support for easier integration testing and documentation of API endpoints  
+- Model Validation against all endpoints to provide greater feedback to users of the API
+- Central Validation/Exception handling to allow faster extensible development
+- Support for HTTPS for increase security  
+- Implemented MVVM & Repository Patterns for cleaner code design (Web API Front-End + BL mid-logic layer + DAL for data access)  
+- DI/IoC and Inheritance among providers for greater extensibility, modular/re-use (SOLID principles) & support for unit testing  
+- Covering Unit Tests across the BL to support any CI/CD and QA process/policies  
+- CI: GitHub Deployment action to build & test when any branch/PR are pushed into main  
+- Identity support via JWT token-based to support distributed authentication  
+- Native logon support using SHA512 encrypted/hashed passwords  
+- User Management (CRUD for users)  
+- Authorization: Some endpoints are locked down unless signed-in/authed  
+- ORM support with EntityFramework: Greater DB abstraction, faster dev-time, and out-of-the-box support for more DB platforms  
+- Easy to understand fully-commented clean code  
 
 
 ## Requirements:
 ----------------
 You'll need to install the following to build/run the solution...  
-1. .Net 8 SDK  
+1. .Net 8 SDK
 
 
 ## Setup Guide:
@@ -22,6 +38,8 @@ You'll need to install the following to build/run the solution...
   - Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}
   - Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE}
   - Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME}
+  - ConnectionString__Default = {DB connection string}
+  - DAL__Type = "EntityFramework" //[Optional] Can leave out/blank if you wish to use direct SQL commands when accessing DB
 
 
 
@@ -42,3 +60,7 @@ You'll need to install the following to build/run the solution...
 20240904 - Added support for Http Status Codes when returning from endpoints  
 20240904 - Added centralised exception handling  
 20240904 - Added Jwt Token-based Auth  
+20240906 - Added User Management & Logon Capability  
+20240906 - Added BL Dtos to replace Types in Web Endpoints  
+20240906 - Added EntityFramework support to DAL providers  
+20240906 - Secured DAL connection strings to app-config/environment-variables  

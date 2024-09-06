@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.WebSockets;
+using XeroProducts.Api.FormModels.User;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 
@@ -24,7 +26,7 @@ namespace XeroProducts.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<ProductViewModel>> GetUser(Guid id)
+        public async Task<ActionResult<UserViewModel>> GetUser(Guid id)
         {
             //attempt to grab the matching product
             var user = await _userProvider.GetUser(id);
@@ -41,9 +43,9 @@ namespace XeroProducts.Api.Controllers
         [HttpPost]
         [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateUserFormModel userModel)
+        public async Task<ActionResult<UserViewModel>> Create([FromBody] CreateUserFormModel userModel)
         {
-            //Convert the model to a type that can be saved
+            //Convert the model to a dto that can be passed to BL
             var userDto = userModel.ToDto();
 
             //Save the user
@@ -51,6 +53,23 @@ namespace XeroProducts.Api.Controllers
 
             //Return successfully "Created" action including the newly created product (and it's generated ID)
             return CreatedAtAction(nameof(Create), new UserViewModel(userDto));
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<ActionResult<UserViewModel>> Update(Guid id, [FromBody] UpdateUserFormModel userModel)
+        {
+            //Convert the model to a dto that can be passed to BL
+            var userDto = userModel.ToDto();
+            userDto.Id = id;
+
+            //Update the user
+            await _userProvider.UpdateUser(userDto);
+
+            //return a Success along with the updated user
+            return Ok(new UserViewModel(userDto));
         }
 
         /// <summary>

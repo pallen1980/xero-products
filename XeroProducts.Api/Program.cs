@@ -10,6 +10,8 @@ using XeroProducts.DAL.Sql.Providers;
 using XeroProducts.BL.Identity;
 using XeroProducts.PasswordService.Interfaces;
 using XeroProducts.PasswordService.Providers;
+using XeroProducts.DAL.EntityFramework.Sql.Providers;
+using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,10 +41,24 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // DependencyInjection...
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 // - DAL
-builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
-builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
-builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+//   check appsettings, if we have a type, use the preferred DAL type
+if (builder.Configuration.GetValue<string>("DAL::Type")  == "EntityFramework")
+{
+    //ORM / EntityFramework
+    builder.Services.AddScoped<IXeroProductsContext, XeroProductsContext>();
+    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionEntityFrameworkSqlProvider>();
+    builder.Services.AddScoped<IProductDALProvider, ProductEntityFrameworkSqlProvider>();
+    builder.Services.AddScoped<IUserDALProvider, UserEntityFrameworkSqlProvider>();
+}
+else
+{
+    //No appsettings for DAL::type, just use Direct SQL Command Providers
+    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
+    builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
+    builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+}
 // - BL
 builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
 builder.Services.AddScoped<IProductProvider, ProductProvider>();

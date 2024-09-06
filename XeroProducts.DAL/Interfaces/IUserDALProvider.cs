@@ -21,14 +21,14 @@ namespace XeroProducts.DAL.Interfaces
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        Task<User> GetUser(Guid Id);
+        Task<User?> GetUser(Guid Id);
 
         /// <summary>
         /// Get a user by their username
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<User> GetUser(string username);
+        Task<User?> GetUser(string username);
 
         /// <summary>
         /// Store a new user in the data store

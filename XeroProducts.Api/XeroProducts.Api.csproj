@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="App_Data\XeroProducts.mdf" />
+    <None Remove="App_Data\XeroProducts_log.ldf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="App_Data\Database.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -21,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XeroProducts.BL\XeroProducts.BL.csproj" />
+    <ProjectReference Include="..\XeroProducts.DAL.EntityFramework.Sql\XeroProducts.DAL.EntityFramework.Sql.csproj" />
     <ProjectReference Include="..\XeroProducts.DAL.Sql\XeroProducts.DAL.Sql.csproj" />
     <ProjectReference Include="..\XeroProducts.DAL\XeroProducts.DAL.csproj" />
     <ProjectReference Include="..\XeroProducts.Types\XeroProducts.Types.csproj" />
@@ -29,7 +35,6 @@
   <ItemGroup>
     <Folder Include="Filters\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="FormModels\User\" />
     <Folder Include="Models\User\" />
   </ItemGroup>
 

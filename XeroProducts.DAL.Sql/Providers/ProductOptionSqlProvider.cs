@@ -1,15 +1,19 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using XeroProducts.DAL.Interfaces;
-using XeroProducts.DAL.Sql.Helpers;
 using XeroProducts.Types;
 
 namespace XeroProducts.DAL.Sql.Providers
 {
-    public class ProductOptionSqlProvider : IProductOptionDALProvider
+    public class ProductOptionSqlProvider : BaseSqlProvider, IProductOptionDALProvider
     {
-        public async Task<ProductOption> GetProductOption(Guid productOptionId)
+        public ProductOptionSqlProvider(IConfiguration configuration) : base(configuration)
         {
-            using (var connection = SqlHelper.NewConnection())
+        }
+
+        public async Task<ProductOption?> GetProductOption(Guid productOptionId)
+        {
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"select * from productoption where id = '{productOptionId}'", connection);
 
@@ -36,7 +40,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task<ProductOptions> GetProductOptions(Guid productId)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var where = $"where productid = '{productId}'";
 
@@ -59,7 +63,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task<Guid> CreateProductOption(ProductOption productOption)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"insert into productoption (id, productid, name, description) values ('{productOption.Id}', '{productOption.ProductId}', '{productOption.Name}', '{productOption.Description}')", connection);
                   
@@ -72,7 +76,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task UpdateProductOption(ProductOption productOption)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"update productoption set name = '{productOption.Name}', description = '{productOption.Description}' where id = '{productOption.Id}'", connection);
 
@@ -83,7 +87,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task DeleteProductOption(Guid productOptionId)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"delete from productoption where id = '{productOptionId}'", connection);
 

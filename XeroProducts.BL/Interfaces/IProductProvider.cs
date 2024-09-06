@@ -4,7 +4,7 @@ namespace XeroProducts.BL.Interfaces
 {
     public interface IProductProvider
     {
-        Task<ProductDto> GetProduct(Guid id);
+        Task<ProductDto?> GetProduct(Guid id);
         Task<IList<ProductDto>> GetProducts();
         Task<IList<ProductDto>> GetProducts(string name);
         Task Save(ProductDto product);

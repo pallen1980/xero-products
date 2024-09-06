@@ -17,11 +17,11 @@ namespace XeroProducts.BL.Providers
             _productOptionProvider = productOptionProvider;
         }
 
-        public async Task<ProductDto> GetProduct(Guid id)
+        public async Task<ProductDto?> GetProduct(Guid id)
         {
             var product = await _productDALProvider.GetProduct(id);
 
-            return new ProductDto(product);
+            return product != null ? new ProductDto(product) : null;
         }
 
         public async Task<IList<ProductDto>> GetProducts()

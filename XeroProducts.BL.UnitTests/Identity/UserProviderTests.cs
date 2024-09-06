@@ -107,6 +107,68 @@ namespace XeroProducts.BL.UnitTests.Identity
         }
 
         [Test]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+
+        public async Task UpdateUser_WhenGivenValidDto_UpdatesUser(int elementIndex)
+        {
+            //Arrange
+            var testData = UserTestData.Create();
+            var originalTestDataCount = testData.Count;
+
+            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+
+            var existingUser = new UserDto()
+            {
+                Id = testData.ElementAt(elementIndex).Id,
+                FirstName = "Joe",
+                LastName = "Bloggs",
+                Email = "joe.bloggs@acme.com",
+                Username = testData.ElementAt(elementIndex).Username,
+                Password = "password1"
+            };
+
+            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+
+            //Act
+            await sut.UpdateUser(existingUser);
+
+            //Assert
+            Assert.That(originalTestDataCount, Is.EqualTo(testData.Count));
+            Assert.That(existingUser.FirstName, Is.EqualTo(testData.ElementAt(elementIndex).FirstName));
+            Assert.That(existingUser.LastName, Is.EqualTo(testData.ElementAt(elementIndex).LastName));
+            Assert.That(existingUser.Email, Is.EqualTo(testData.ElementAt(elementIndex).Email));
+            Assert.That(existingUser.Username, Is.EqualTo(testData.ElementAt(elementIndex).Username));
+        }
+
+        [Test]
+        public void UpdateUser_WhenUsernameDoesNotExist_RaisesException()
+        {
+            //Arrange
+            var testData = UserTestData.Create();
+
+            var existingUser = new UserDto()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Joe",
+                LastName = "Bloggs",
+                Email = "joe.bloggs@acme.com",
+                Username = "NOT_A_MATCHING_USERNAME",
+                Password = "password1"
+            };
+
+            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+
+            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+
+            //Act/Assert
+            Assert.ThrowsAsync<KeyNotFoundException>(() => sut.UpdateUser(existingUser));
+        }
+
+        [Test]
         public async Task DeleteUser_WhenUserExists_RemovesUser()
         {
             //Arrange

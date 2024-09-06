@@ -1,21 +1,23 @@
 using XeroProducts.BL.Dtos.User;
-using XeroProducts.Types;
 
-public class CreateUserFormModel : UserModel
+namespace XeroProducts.Api.FormModels.User
 {
-    /// <summary>
-    /// Convert this FormModel to a Dto
-    /// </summary>
-    /// <returns></returns>
-    public UserDto ToDto()
+    public class CreateUserFormModel : UserModel
     {
-        return new UserDto()
+        /// <summary>
+        /// Convert this FormModel to a Dto
+        /// </summary>
+        /// <returns></returns>
+        public UserDto ToDto()
         {
-            FirstName = FirstName,
-            LastName = LastName,
-            Email = Email,
-            Username = Username,
-            Password = Password
-        };
+            return new UserDto()
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                Username = Username,
+                Password = Password
+            };
+        }
     }
 }
