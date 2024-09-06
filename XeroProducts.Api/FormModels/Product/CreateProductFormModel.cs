@@ -1,4 +1,4 @@
-using XeroProducts.Types;
+using XeroProducts.BL.Dtos.Product;
 
 public class CreateProductFormModel : ProductModel
 {
@@ -6,9 +6,9 @@ public class CreateProductFormModel : ProductModel
     /// Convert this FormModel to a Type
     /// </summary>
     /// <returns></returns>
-    public Product ToType()
+    public ProductDto ToDto()
     {
-        return new Product()
+        return new ProductDto()
         {
             Id = Guid.NewGuid(),
             Name = Name,

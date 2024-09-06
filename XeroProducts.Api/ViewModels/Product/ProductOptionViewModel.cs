@@ -1,4 +1,4 @@
-using XeroProducts.Types;
+using XeroProducts.BL.Dtos.Product;
 
 public class ProductOptionViewModel
 {
@@ -7,7 +7,7 @@ public class ProductOptionViewModel
     public string Name { get; set; }
     public string? Description { get; set; }
 
-    public ProductOptionViewModel(ProductOption option)
+    public ProductOptionViewModel(ProductOptionDto option)
     {
         Id = option.Id;
         ProductId = option.ProductId;

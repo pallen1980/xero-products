@@ -50,7 +50,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateProductFormModel productModel)
     {
         //Convert the model to a type that can be saved
-        var product = productModel.ToType();
+        var product = productModel.ToDto();
 
         //Save the type
         await _productProvider.Save(product);
@@ -150,7 +150,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ProductOptionViewModel>> CreateOption(Guid productId, [FromBody] CreateProductOptionFormModel option)
     {
         //convert the option to a type we can save
-        var productOption = option.ToType(productId);
+        var productOption = option.ToDto(productId);
 
         //save the new option
         await _productOptionProvider.Save(productOption);

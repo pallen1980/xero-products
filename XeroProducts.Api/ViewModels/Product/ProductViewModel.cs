@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-using XeroProducts.Types;
+using XeroProducts.BL.Dtos.Product;
 
 public class ProductViewModel
 {
@@ -13,7 +12,7 @@ public class ProductViewModel
 
     public decimal DeliveryPrice { get; set; }
 
-    public ProductViewModel(Product product)
+    public ProductViewModel(ProductDto product)
     {
         Id = product.Id;
         Name = product.Name;

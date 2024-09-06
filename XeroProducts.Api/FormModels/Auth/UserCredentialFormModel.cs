@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-public record UserCredential
+public record UserCredentialFormModel
 {
     [Required(ErrorMessage = "You must supply a username")]
-    public string Username { get; set; }
+    public required string Username { get; set; }
 
     [Required(ErrorMessage = "You must supply a password")]
-    public string Password { get; set; }
+    public required string Password { get; set; }
 }

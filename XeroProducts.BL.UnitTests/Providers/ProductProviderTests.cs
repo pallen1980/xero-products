@@ -1,16 +1,9 @@
 ﻿using Moq;
-using NUnit.Framework.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using XeroProducts.BL.Dtos.Product;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.BL.Providers;
 using XeroProducts.BL.UnitTests.Mocks;
 using XeroProducts.BL.UnitTests.TestData;
-using XeroProducts.DAL;
-using XeroProducts.Types;
 
 namespace XeroProducts.BL.UnitTests.Providers
 {
@@ -36,8 +29,8 @@ namespace XeroProducts.BL.UnitTests.Providers
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.IsAssignableFrom<Product>(result);
-            Assert.AreEqual(expectedItem.Id, result.Id);
+            Assert.IsAssignableFrom<ProductDto>(result);
+            Assert.That(expectedItem.Id, Is.EqualTo(result.Id));
         }
 
         [Test]
@@ -63,9 +56,8 @@ namespace XeroProducts.BL.UnitTests.Providers
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Items);
-            Assert.IsNotEmpty(result.Items);
-            Assert.AreEqual(testData.Where(p => p.Name.Contains(expectedItem.Name)).Count(), result.Items.Count);
+            Assert.IsNotEmpty(result);
+            Assert.That(testData.Where(p => p.Name.Contains(expectedItem.Name)).Count(), Is.EqualTo(result.Count));
         }
 
         [Test]
@@ -78,7 +70,7 @@ namespace XeroProducts.BL.UnitTests.Providers
             var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
             var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
 
-            var newProduct = new Product()
+            var newProduct = new ProductDto()
             {
                 Id = Guid.NewGuid(),
                 Name = "New Product",
@@ -95,13 +87,13 @@ namespace XeroProducts.BL.UnitTests.Providers
 
 
             //Assert
-            Assert.AreNotEqual(initialTestDataCount, testData.Count);
-            Assert.AreEqual(initialTestDataCount + 1, testData.Count);
+            Assert.That(initialTestDataCount, Is.Not.EqualTo(testData.Count));
+            Assert.That(initialTestDataCount + 1, Is.EqualTo(testData.Count));
             Assert.IsNotNull(testData.SingleOrDefault(td => td.Id == newProduct.Id));
-            Assert.AreEqual(newProduct.Name, testData.SingleOrDefault(td => td.Id == newProduct.Id).Name);
-            Assert.AreEqual(newProduct.Description, testData.SingleOrDefault(td => td.Id == newProduct.Id).Description);
-            Assert.AreEqual(newProduct.Price, testData.SingleOrDefault(td => td.Id == newProduct.Id).Price);
-            Assert.AreEqual(newProduct.DeliveryPrice, testData.SingleOrDefault(td => td.Id == newProduct.Id).DeliveryPrice);
+            Assert.That(newProduct.Name, Is.EqualTo(testData.SingleOrDefault(td => td.Id == newProduct.Id).Name));
+            Assert.That(newProduct.Description, Is.EqualTo(testData.SingleOrDefault(td => td.Id == newProduct.Id).Description));
+            Assert.That(newProduct.Price, Is.EqualTo(testData.SingleOrDefault(td => td.Id == newProduct.Id).Price));
+            Assert.That(newProduct.DeliveryPrice, Is.EqualTo(testData.SingleOrDefault(td => td.Id == newProduct.Id).DeliveryPrice));
         }
 
         [Test]
@@ -118,7 +110,7 @@ namespace XeroProducts.BL.UnitTests.Providers
             var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
             var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
 
-            var existingProduct = new Product(false)
+            var existingProduct = new ProductDto(false)
             {
                 Id = testData.ElementAt(elementIndex).Id,
                 Name = "Updated Product",
@@ -135,10 +127,10 @@ namespace XeroProducts.BL.UnitTests.Providers
 
 
             //Assert
-            Assert.AreEqual(initialTestDataCount, testData.Count);
+            Assert.That(initialTestDataCount, Is.EqualTo(testData.Count));
             Assert.IsNotNull(testData.SingleOrDefault(td => td.Id == existingProduct.Id));
-            Assert.AreEqual(existingProduct.Name, testData.SingleOrDefault(td => td.Id == existingProduct.Id).Name);
-            Assert.AreEqual(existingProduct.Description, testData.SingleOrDefault(td => td.Id == existingProduct.Id).Description);
+            Assert.That(existingProduct.Name, Is.EqualTo(testData.SingleOrDefault(td => td.Id == existingProduct.Id).Name));
+            Assert.That(existingProduct.Description, Is.EqualTo(testData.SingleOrDefault(td => td.Id == existingProduct.Id).Description));
         }
 
 
@@ -169,11 +161,11 @@ namespace XeroProducts.BL.UnitTests.Providers
 
 
             //Assert
-            Assert.AreNotEqual(initialProductTestDataCount, productsTestData.Count);
-            Assert.AreEqual(initialProductTestDataCount - 1, productsTestData.Count);
+            Assert.That(initialProductTestDataCount, Is.Not.EqualTo(productsTestData.Count));
+            Assert.That(initialProductTestDataCount - 1, Is.EqualTo(productsTestData.Count));
             Assert.IsNull(productsTestData.SingleOrDefault(td => td.Id == id));
 
-            Assert.AreNotEqual(initialOptionsTestDataCount, productOptionsTestData.Count);
+            Assert.That(initialOptionsTestDataCount, Is.Not.EqualTo(productOptionsTestData.Count));
             Assert.IsNull(productOptionsTestData.SingleOrDefault(td => td.ProductId == id));
         }
 

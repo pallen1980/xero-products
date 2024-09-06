@@ -1,4 +1,4 @@
-using XeroProducts.Types;
+using XeroProducts.BL.Dtos.Product;
 
 public class CreateProductOptionFormModel : ProductOptionModel
 {
@@ -8,9 +8,9 @@ public class CreateProductOptionFormModel : ProductOptionModel
     /// </summary>
     /// <param name="productId"></param>
     /// <returns></returns>
-    public ProductOption ToType(Guid productId)
+    public ProductOptionDto ToDto(Guid productId)
     {
-        return new ProductOption()
+        return new ProductOptionDto()
         {
             Id = Guid.NewGuid(),
             ProductId = productId,

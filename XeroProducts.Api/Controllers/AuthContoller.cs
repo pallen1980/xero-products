@@ -18,7 +18,7 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] UserCredential userCredential)
+    public async Task<ActionResult<string>> Login([FromBody] UserCredentialFormModel userCredential)
     {
         // Attempt to match usercredentials to a user
         var user = await _userProvider.VerifyUserCredentials(userCredential.Username, userCredential.Password);
