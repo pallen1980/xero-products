@@ -14,7 +14,7 @@ namespace XeroProducts.DAL.Interfaces
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        Task<ProductOption> GetProductOption(Guid productOptionId);
+        Task<ProductOption?> GetProductOption(Guid productOptionId);
 
         /// <summary>
         /// Grab the all product options matching the given product ID

@@ -7,7 +7,7 @@ namespace XeroProducts.DAL.Sql.Providers
 {
     public class ProductSqlProvider : IProductDALProvider
     {
-        public async Task<Product> GetProduct(Guid id)
+        public async Task<Product?> GetProduct(Guid id)
         {
             using (var connection = SqlHelper.NewConnection())
             {

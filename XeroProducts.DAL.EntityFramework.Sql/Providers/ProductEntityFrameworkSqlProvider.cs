@@ -17,21 +17,21 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 
         }
 
-        public Task<Guid> CreateProduct(Product product)
+        /// <summary>
+        /// Return the product that matches the given ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Product?> GetProduct(Guid id)
         {
-            throw new NotImplementedException();
+            return await Context.Products.SingleOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task DeleteProduct(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> GetProduct(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Returns all products matching the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<Products> GetProducts(string name = "")
         {
             var products = await Context.Products
@@ -41,9 +41,61 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
             return new Products(products);
         }
 
-        public Task UpdateProduct(Product product)
+        /// <summary>
+        /// Adds/Attaches the product to the context, and saves the context
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public async Task<Guid> CreateProduct(Product product)
         {
-            throw new NotImplementedException();
+            await Context.Products.AddAsync(product);
+
+            await Context.SaveChangesAsync();
+            
+            return product.Id;
+        }
+
+        /// <summary>
+        /// Find the product matching the ID in the given product, updates the changeable properties, and saves the context
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public async Task UpdateProduct(Product product)
+        {
+            var dbProduct = await Context.Products.SingleOrDefaultAsync(p => p.Id == product.Id);
+
+            if (dbProduct == null)
+            {
+                throw new KeyNotFoundException($"Update Failed: No Product found matching id: {product.Id}");
+            }
+
+            dbProduct.Name = product.Name;
+            dbProduct.Description = product.Description;
+            dbProduct.Price = product.Price;
+            dbProduct.DeliveryPrice = product.DeliveryPrice;
+
+            await Context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Find the product matching the given ID, removes it from the context, and saves the context
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public async Task DeleteProduct(Guid id)
+        {
+            var product = await Context.Products.SingleOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Delete Failed: No Product found matching id: {id}");
+            }
+
+            Context.Products.Remove(product);
+
+            await Context.SaveChangesAsync();
         }
     }
 }

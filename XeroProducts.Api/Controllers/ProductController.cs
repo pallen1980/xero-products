@@ -200,7 +200,7 @@ public class ProductController : ControllerBase
     [HttpDelete]
     [Authorize]
     [Route("{productId}/options/{id}")]
-    public async Task<ActionResult<Guid>> DeleteOption(Guid id)
+    public async Task<ActionResult<Guid>> DeleteOption(Guid productId, Guid id)
     {
         //delete the matching option
         await _productOptionProvider.Delete(id);

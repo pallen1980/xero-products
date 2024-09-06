@@ -34,7 +34,7 @@ namespace XeroProducts.DAL.Sql.Providers
             return true;
         }
 
-        public async Task<User> GetUser(Guid Id)
+        public async Task<User?> GetUser(Guid Id)
         {
             using (var connection = SqlHelper.NewConnection())
             {
@@ -62,7 +62,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User?> GetUser(string username)
         {
             using (var connection = SqlHelper.NewConnection())
             {

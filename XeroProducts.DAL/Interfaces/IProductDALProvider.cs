@@ -9,7 +9,7 @@ namespace XeroProducts.DAL.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Product> GetProduct(Guid id);
+        Task<Product?> GetProduct(Guid id);
 
         /// <summary>
         /// Grab any product that matches the given name

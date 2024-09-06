@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(option =>
 if (true)
 {
     //ORM / EntityFramework
-    builder.Services.AddSingleton<IXeroProductsContext, XeroProductsContext>();
+    builder.Services.AddScoped<IXeroProductsContext, XeroProductsContext>();
     builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionEntityFrameworkSqlProvider>();
     builder.Services.AddScoped<IProductDALProvider, ProductEntityFrameworkSqlProvider>();
     builder.Services.AddScoped<IUserDALProvider, UserEntityFrameworkSqlProvider>();
