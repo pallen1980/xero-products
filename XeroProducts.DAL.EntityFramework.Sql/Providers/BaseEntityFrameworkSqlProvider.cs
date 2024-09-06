@@ -7,7 +7,7 @@ using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 
 namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 {
-    public class BaseEntityFrameworkSqlProvider
+    public abstract class BaseEntityFrameworkSqlProvider
     {
         protected IXeroProductsContext Context;
 

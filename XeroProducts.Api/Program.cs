@@ -41,8 +41,10 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // DependencyInjection...
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 // - DAL
-if (true)
+//   check appsettings, if we have a type, use the preferred DAL type
+if (builder.Configuration.GetValue<string>("DAL::Type")  == "EntityFramework")
 {
     //ORM / EntityFramework
     builder.Services.AddScoped<IXeroProductsContext, XeroProductsContext>();
@@ -52,7 +54,7 @@ if (true)
 }
 else
 {
-    //Direct SQL Server commands
+    //No appsettings for DAL::type, just use Direct SQL Command Providers
     builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
     builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
     builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();

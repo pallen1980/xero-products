@@ -1,22 +1,21 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using XeroProducts.DAL.Interfaces;
-using XeroProducts.DAL.Sql.Helpers;
 using XeroProducts.Types;
 
 namespace XeroProducts.DAL.Sql.Providers
 {
-    public class UserSqlProvider : IUserDALProvider
+    public class UserSqlProvider : BaseSqlProvider, IUserDALProvider
     {
+        public UserSqlProvider(IConfiguration configuration) : base(configuration)
+        {
+        }
+
         public async Task<bool> UserExists(string username)
         {
             //Attempt to bring back any user that matches the username
 
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"SELECT * FROM [user] WHERE LOWER([Username]) = '{username.ToLower().Trim()}'", connection);
                 await connection.OpenAsync();
@@ -36,7 +35,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task<User?> GetUser(Guid Id)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var sql = $"SELECT [ID], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] FROM [user] WHERE [Id] = '{Id}'";
                 var cmd = new SqlCommand(sql, connection);
@@ -64,7 +63,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task<User?> GetUser(string username)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var sql = $"SELECT [ID], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] FROM [user] WHERE LOWER([Username]) = '{username.ToLower().Trim()}'";
                 var cmd = new SqlCommand(sql, connection);
@@ -92,7 +91,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task<Guid> CreateUser(User user)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var sql = $"INSERT INTO [user] ([Id], [FirstName], [LastName], [Email], [Username], [HashedPassword], [Salt], [IsSuperAdmin] )"
                         + $"VALUES ('{user.Id}', '{user.FirstName.Trim()}', '{user.LastName.Trim()}', '{user.Email.Trim()}', '{user.Username.Trim()}', '{user.HashedPassword}', '{user.Salt}', 0 )";
@@ -106,7 +105,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task UpdateUser(User user)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var sql = $"UPDATE [user] "
                         + $"SET [FirstName] = '{user.FirstName.Trim()}', "
@@ -125,7 +124,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public async Task DeleteUser(Guid id)
         {
-            using (var connection = SqlHelper.NewConnection())
+            using (var connection = NewConnection())
             {
                 var cmd = new SqlCommand($"DELETE FROM [user] WHERE [Id] = '{id}'", connection);
 
