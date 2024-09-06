@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XeroProducts.BL.Interfaces;
 
-namespace XeroProducts.BL.Authentication
+namespace XeroProducts.BL.Security
 {
     public class JwtTokenProvider : IJwtTokenProvider
     {
@@ -40,11 +40,11 @@ namespace XeroProducts.BL.Authentication
                 ),
                 
                 IssuedAt = DateTime.UtcNow,
-                Issuer = _configuration.GetValue<string>("Auth__JwtConfig__ValidIssuer"),
+                Issuer = _configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
 
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 
-                Audience = _configuration.GetValue<string>("Auth__JwtConfig__ValidAudience"),
+                Audience = _configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
                 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -61,7 +61,7 @@ namespace XeroProducts.BL.Authentication
         /// <returns></returns>
         public static byte[] GetJwtKeyBytes(IConfiguration config)
         {
-            var key = config.GetValue<string>("Auth__JwtConfig__Key");
+            var key = config.GetValue<string>("Auth:JwtConfig:Key");
 
             return Encoding.ASCII.GetBytes(key);
         }

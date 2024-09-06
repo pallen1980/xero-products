@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using XeroProducts.BL.Authentication;
+using XeroProducts.BL.Security;
 
 namespace XeroProducts.BL.Interfaces
 {

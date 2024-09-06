@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using XeroProducts.BL.CustomExceptions;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
@@ -23,6 +24,16 @@ public class GlobalExceptionHandler : IExceptionHandler
 
             case KeyNotFoundException:
                 errorResponse.Status = (int)HttpStatusCode.NotFound;
+                errorResponse.Title = exception.GetType().Name;
+                break;
+
+            case AlreadyExistsException:
+                errorResponse.Status = (int)HttpStatusCode.UnprocessableEntity;
+                errorResponse.Title = exception.GetType().Name;
+                break;
+
+            case SuperAdminDeletionAttemptException:
+                errorResponse.Status = (int)HttpStatusCode.MethodNotAllowed;
                 errorResponse.Title = exception.GetType().Name;
                 break;
 
