@@ -1,8 +1,8 @@
-using XeroProducts.BL.Dtos.User;
+﻿using XeroProducts.BL.Dtos.User;
 
 namespace XeroProducts.Api.FormModels.User
 {
-    public class CreateUserFormModel : UserModel
+    public class UpdateUserFormModel : UserModel
     {
         /// <summary>
         /// Convert this FormModel to a Dto

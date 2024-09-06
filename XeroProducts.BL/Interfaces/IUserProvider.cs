@@ -24,6 +24,13 @@ namespace XeroProducts.BL.Interfaces
         Task<Guid> CreateUser(UserDto user);
 
         /// <summary>
+        /// Update an existing user in the data store
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task UpdateUser(UserDto user);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="Id"></param>
@@ -31,7 +38,7 @@ namespace XeroProducts.BL.Interfaces
         Task DeleteUser(Guid Id);
 
         /// <summary>
-        /// Verify the credentials match an existing user
+        /// Verify the credentials match an existing user. Return the user of the match, or null if no credentials match
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
