@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XeroProducts.BL.Dtos
+namespace XeroProducts.BL.Dtos.User
 {
     public class UserDto
     {
@@ -19,7 +19,14 @@ namespace XeroProducts.BL.Dtos
 
         public UserDto()
         {
-
+            Id = Guid.Empty;
+            FirstName = "";
+            LastName = "";
+            Email = "";
+            Username = "";
+            Password = "";
+            Salt = "";
+            IsSuperAdmin = false;
         }
 
         public UserDto(Types.User user)

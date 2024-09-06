@@ -1,11 +1,11 @@
-using XeroProducts.Types;
+using XeroProducts.BL.Dtos.Product;
 
 public class ProductsViewModel
 {
     public List<ProductViewModel> Items { get; set; }
 
-    public ProductsViewModel(Products products)
+    public ProductsViewModel(IList<ProductDto> products)
     {
-        Items = new List<ProductViewModel>(products.Items.Select(p => new ProductViewModel(p)).ToList());
+        Items = new List<ProductViewModel>(products.Select(p => new ProductViewModel(p)).ToList());
     }
 }

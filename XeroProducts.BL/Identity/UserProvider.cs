@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using XeroProducts.BL.CustomExceptions;
-using XeroProducts.BL.Dtos;
+using XeroProducts.BL.Dtos.User;
 using XeroProducts.BL.Interfaces;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.PasswordService;

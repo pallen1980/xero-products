@@ -1,4 +1,5 @@
-﻿using XeroProducts.BL.Interfaces;
+﻿using XeroProducts.BL.Dtos.Product;
+using XeroProducts.BL.Interfaces;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
@@ -13,26 +14,30 @@ namespace XeroProducts.BL.Providers
             _productOptionDALProvider = productOptionDALProvider;
         }
 
-        public async Task<ProductOption> GetProductOption(Guid id)
+        public async Task<ProductOptionDto> GetProductOption(Guid id)
         {
-            return await _productOptionDALProvider.GetProductOption(id);
+            var product = await _productOptionDALProvider.GetProductOption(id);
+
+            return new ProductOptionDto(product);
         }
 
 
-        public async Task<ProductOptions> GetProductOptions(Guid productId)
+        public async Task<IList<ProductOptionDto>> GetProductOptions(Guid productId)
         {
-            return await _productOptionDALProvider.GetProductOptions(productId);
+            var products = await _productOptionDALProvider.GetProductOptions(productId);
+
+            return products.Items.Select(p => new ProductOptionDto(p)).ToList();
         }
 
-        public async Task Save(ProductOption productOption)
+        public async Task Save(ProductOptionDto productOptionDto)
         {
-            if (productOption.IsNew)
+            if (productOptionDto.IsNew)
             {
-                await _productOptionDALProvider.CreateProductOption(productOption);
+                await _productOptionDALProvider.CreateProductOption(productOptionDto.ToType());
             }
             else
             {
-                await _productOptionDALProvider.UpdateProductOption(productOption);
+                await _productOptionDALProvider.UpdateProductOption(productOptionDto.ToType());
             }
         }
 

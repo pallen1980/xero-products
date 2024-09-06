@@ -1,18 +1,8 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using XeroProducts.BL.CustomExceptions;
-using XeroProducts.BL.Dtos;
+﻿using XeroProducts.BL.CustomExceptions;
+using XeroProducts.BL.Dtos.User;
 using XeroProducts.BL.Identity;
 using XeroProducts.BL.UnitTests.Mocks;
 using XeroProducts.BL.UnitTests.TestData;
-using XeroProducts.DAL.Interfaces;
-using XeroProducts.PasswordService.Interfaces;
 
 namespace XeroProducts.BL.UnitTests.Identity
 {
@@ -36,11 +26,11 @@ namespace XeroProducts.BL.UnitTests.Identity
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(id, result.Id);
+            Assert.That(id, Is.EqualTo(result.Id));
         }
 
         [Test]
-        public async Task GetUserById_WhenUserWithIdDoesNotExists_RaisesException()
+        public void GetUserById_WhenUserWithIdDoesNotExists_RaisesException()
         {
             //Arrange
             var testData = UserTestData.Create();
@@ -82,13 +72,13 @@ namespace XeroProducts.BL.UnitTests.Identity
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.AreNotEqual(Guid.Empty, result);
-            Assert.AreNotEqual(originalTestDataCount, testData.Count);
-            Assert.AreEqual(originalTestDataCount + 1, testData.Count);
+            Assert.That(Guid.Empty, Is.Not.EqualTo(result));
+            Assert.That(originalTestDataCount, Is.Not.EqualTo(testData.Count));
+            Assert.That(originalTestDataCount + 1, Is.EqualTo(testData.Count));
         }
 
         [Test]
-        public async Task CreateUser_WhenUsernameExists_RaisesException()
+        public void CreateUser_WhenUsernameExists_RaisesException()
         {
             //Arrange
             var duplicateUserName = "ADuplicateUserName";
@@ -134,12 +124,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             await sut.DeleteUser(id);
 
             //Assert
-            Assert.AreNotEqual(originalTestDataCount, testData.Count);
-            Assert.AreEqual(originalTestDataCount - 1, testData.Count);
+            Assert.That(originalTestDataCount, Is.Not.EqualTo(testData.Count));
+            Assert.That(originalTestDataCount - 1, Is.EqualTo(testData.Count));
         }
 
         [Test]
-        public async Task DeleteUser_WhenUserIsSuperAdmin_RaisesException()
+        public void DeleteUser_WhenUserIsSuperAdmin_RaisesException()
         {
             //Arrange
             var testData = UserTestData.Create();
@@ -157,7 +147,7 @@ namespace XeroProducts.BL.UnitTests.Identity
         }
 
         [Test]
-        public async Task DeleteUser_WhenUserDoesNotExist_RaisesException()
+        public void DeleteUser_WhenUserDoesNotExist_RaisesException()
         {
             //Arrange
             var testData = UserTestData.Create();

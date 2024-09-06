@@ -1,4 +1,4 @@
-using XeroProducts.BL.Dtos;
+using XeroProducts.BL.Dtos.User;
 using XeroProducts.Types;
 
 public class CreateUserFormModel : UserModel
