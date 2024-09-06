@@ -7,9 +7,9 @@ namespace XeroProducts.Types
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         public decimal Price { get; set; }
 
@@ -17,6 +17,11 @@ namespace XeroProducts.Types
 
         [JsonIgnore]
         public bool IsNew { get; }
+
+        public Product()
+        {
+
+        }
 
         public Product(bool isNew = true)
         {

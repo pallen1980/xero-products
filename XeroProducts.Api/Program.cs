@@ -10,6 +10,8 @@ using XeroProducts.DAL.Sql.Providers;
 using XeroProducts.BL.Identity;
 using XeroProducts.PasswordService.Interfaces;
 using XeroProducts.PasswordService.Providers;
+using XeroProducts.DAL.EntityFramework.Sql.Providers;
+using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,9 +42,21 @@ builder.Services.AddSwaggerGen(option =>
 
 // DependencyInjection...
 // - DAL
-builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
-builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
-builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+if (true)
+{
+    //ORM / EntityFramework
+    builder.Services.AddSingleton<IXeroProductsContext, XeroProductsContext>();
+    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionEntityFrameworkSqlProvider>();
+    builder.Services.AddScoped<IProductDALProvider, ProductEntityFrameworkSqlProvider>();
+    builder.Services.AddScoped<IUserDALProvider, UserEntityFrameworkSqlProvider>();
+}
+else
+{
+    //Direct SQL Server commands
+    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
+    builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
+    builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+}
 // - BL
 builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
 builder.Services.AddScoped<IProductProvider, ProductProvider>();
