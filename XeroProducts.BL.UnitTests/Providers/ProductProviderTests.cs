@@ -150,7 +150,7 @@ namespace XeroProducts.BL.UnitTests.Providers
 
             var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(productsTestData);
             var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(productOptionsTestData);
-            var iProductOptionProvider = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>(iProductOptionDALProviderMock).Object);
+            var iProductOptionProvider = new Lazy<IProductOptionProvider>(new ProductOptionProvider(iProductOptionDALProviderMock));
 
             var id = productsTestData.ElementAt(elementIndex).Id;
 
