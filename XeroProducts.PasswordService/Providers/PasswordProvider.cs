@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using XeroProducts.PasswordService.Interfaces;
 using XeroProducts.KeyGeneration;
-using XSystem.Security.Cryptography;
 
 namespace XeroProducts.PasswordService.Providers
 {
     public class PasswordProvider : IPasswordProvider
     {
-        public byte[] GenerateSalt()
+        public virtual byte[] GenerateSalt()
         {
             return KeyGenerator.GenerateKeyBytes(512);
         }
 
-        public string HashPassword(string password, byte[] salt)
+        public virtual string HashPassword(string password, byte[] salt)
         {
-            using (var sha512 = new SHA512Managed())
+            using (var sha512 = System.Security.Cryptography.SHA512.Create())
             {
                 byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
                 byte[] saltedPassword = new byte[passwordBytes.Length + salt.Length];

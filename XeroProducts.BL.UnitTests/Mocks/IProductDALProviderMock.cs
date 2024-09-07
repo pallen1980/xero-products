@@ -1,10 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
@@ -12,13 +6,16 @@ namespace XeroProducts.BL.UnitTests.Mocks
 {
     internal interface IProductDALProviderMock
     {
+        public static Lazy<IProductDALProvider> GetLazyMock(List<Product> testData) 
+            => new Lazy<IProductDALProvider>(GetMock(testData).Object);
+        
         public static Mock<IProductDALProvider> GetMock(List<Product> testData)
         {
             var mock = new Mock<IProductDALProvider>();
 
             //Mock method GetProduct(id):-
             mock.Setup(m => m.GetProduct(It.IsAny<Guid>()))
-                .Returns((Guid id) => Task.FromResult(testData.Single(p => p.Id == id)));
+                .Returns((Guid id) => Task.FromResult(testData.SingleOrDefault(p => p.Id == id)));
 
             //Mock method GetProducts(name):-
             mock.Setup(m => m.GetProducts(It.IsAny<string>()))

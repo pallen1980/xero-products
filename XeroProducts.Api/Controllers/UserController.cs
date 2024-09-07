@@ -12,9 +12,11 @@ namespace XeroProducts.Api.Controllers
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly IUserProvider _userProvider;
+        private readonly Lazy<IUserProvider> _userProvider;
 
-        public UserController(IUserProvider userProvider)
+        protected IUserProvider UserProvider => _userProvider.Value;
+
+        public UserController(Lazy<IUserProvider> userProvider)
         {
             _userProvider = userProvider;
         }
@@ -26,10 +28,10 @@ namespace XeroProducts.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<UserViewModel>> GetUser(Guid id)
+        public virtual async Task<ActionResult<UserViewModel>> GetUser(Guid id)
         {
             //attempt to grab the matching product
-            var user = await _userProvider.GetUser(id);
+            var user = await UserProvider.GetUser(id);
 
             //return a Success along with the product
             return Ok(new UserViewModel(user));
@@ -43,13 +45,13 @@ namespace XeroProducts.Api.Controllers
         [HttpPost]
         [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<UserViewModel>> Create([FromBody] CreateUserFormModel userModel)
+        public virtual async Task<ActionResult<UserViewModel>> Create([FromBody] CreateUserFormModel userModel)
         {
             //Convert the model to a dto that can be passed to BL
             var userDto = userModel.ToDto();
 
             //Save the user
-            userDto.Id = await _userProvider.CreateUser(userModel.ToDto());
+            userDto.Id = await UserProvider.CreateUser(userModel.ToDto());
 
             //Return successfully "Created" action including the newly created product (and it's generated ID)
             return CreatedAtAction(nameof(Create), new UserViewModel(userDto));
@@ -59,14 +61,14 @@ namespace XeroProducts.Api.Controllers
         [Authorize]
         [Route("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<UserViewModel>> Update(Guid id, [FromBody] UpdateUserFormModel userModel)
+        public virtual async Task<ActionResult<UserViewModel>> Update(Guid id, [FromBody] UpdateUserFormModel userModel)
         {
             //Convert the model to a dto that can be passed to BL
             var userDto = userModel.ToDto();
             userDto.Id = id;
 
             //Update the user
-            await _userProvider.UpdateUser(userDto);
+            await UserProvider.UpdateUser(userDto);
 
             //return a Success along with the updated user
             return Ok(new UserViewModel(userDto));
@@ -80,10 +82,10 @@ namespace XeroProducts.Api.Controllers
         [HttpDelete]
         [Authorize]
         [Route("{id}")]
-        public async Task<ActionResult<Guid>> Delete(Guid id)
+        public virtual async Task<ActionResult<Guid>> Delete(Guid id)
         {
             //Delete the product
-            await _userProvider.DeleteUser(id);
+            await UserProvider.DeleteUser(id);
 
             //return Success along with the id of the product that was deleted
             return Ok(id);

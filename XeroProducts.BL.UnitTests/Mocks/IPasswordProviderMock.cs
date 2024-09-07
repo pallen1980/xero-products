@@ -1,17 +1,14 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using XeroProducts.DAL.Interfaces;
 using XeroProducts.PasswordService.Interfaces;
 
 namespace XeroProducts.BL.UnitTests.Mocks
 {
     internal interface IPasswordProviderMock
     {
+        public static Lazy<IPasswordProvider> GetLazyMock()
+            => new Lazy<IPasswordProvider>(GetMock().Object);
+
         public static Mock<IPasswordProvider> GetMock()
         {
             var mock = new Mock<IPasswordProvider>();

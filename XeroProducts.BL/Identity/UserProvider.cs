@@ -9,46 +9,46 @@ namespace XeroProducts.BL.Identity
 {
     public class UserProvider : IUserProvider
     {
-        private readonly IPasswordProvider _passwordProvider;
-        private readonly IUserDALProvider _userDALProvider;
+        private readonly Lazy<IPasswordProvider> _passwordProvider;
+        private readonly Lazy<IUserDALProvider> _userDALProvider;
 
-        public UserProvider(IPasswordProvider passwordProvider, 
-                            IUserDALProvider userDALProvider)
+        protected IPasswordProvider PasswordProvider => _passwordProvider.Value;
+        protected IUserDALProvider UserDALProvider => _userDALProvider.Value;
+
+        public UserProvider(Lazy<IPasswordProvider> passwordProvider, 
+                            Lazy<IUserDALProvider> userDALProvider)
         {
             _passwordProvider = passwordProvider;
             _userDALProvider = userDALProvider;
         }
 
-        public async Task<UserDto> GetUser(Guid id)
+        public virtual async Task<UserDto> GetUser(Guid id)
         {
-            var user = await _userDALProvider.GetUser(id);
+            var user = await UserDALProvider.GetUser(id);
 
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"No matching user found with ID: {id}");
-            }
-
-            return new UserDto(user);
+            return user == null ?
+                throw new KeyNotFoundException($"No matching user found with ID: {id}")
+                : new UserDto(user);
         }
 
-        public async Task<Guid> CreateUser(UserDto userDto)
+        public virtual async Task<Guid> CreateUser(UserDto userDto)
         {
             //Check user does not already exist
-            if (await _userDALProvider.UserExists(userDto.Username))
+            if (await UserDALProvider.UserExists(userDto.Username))
             {
                 throw new AlreadyExistsException("Create Failed: The given username matches an existing user");
             }
 
             //generate unique salt for this user...
-            var salt = _passwordProvider.GenerateSalt();
+            var salt = PasswordProvider.GenerateSalt();
 
             //combine given password and salt to get hashed password
-            var hashedPassword = _passwordProvider.HashPassword(userDto.Password, salt);
+            var hashedPassword = PasswordProvider.HashPassword(userDto.Password, salt);
 
             //need to convert salt to string to save it
             string base64Salt = Convert.ToBase64String(salt);
 
-            return await _userDALProvider.CreateUser(new Types.User
+            return await UserDALProvider.CreateUser(new Types.User
             {
                 Id = Guid.NewGuid(),
                 FirstName = userDto.FirstName,
@@ -60,9 +60,9 @@ namespace XeroProducts.BL.Identity
             });
         }
 
-        public async Task UpdateUser(UserDto userDto)
+        public virtual async Task UpdateUser(UserDto userDto)
         {
-            var user = await _userDALProvider.GetUser(userDto.Id);
+            var user = await UserDALProvider.GetUser(userDto.Id);
 
             // Check user exists
             if (user == null)
@@ -77,7 +77,7 @@ namespace XeroProducts.BL.Identity
             // if username is different, check that new username doesnt already exist
             if (user.Username != userDto.Username)
             {
-                if (await _userDALProvider.UserExists(userDto.Username))
+                if (await UserDALProvider.UserExists(userDto.Username))
                 {
                     throw new AlreadyExistsException("Update Failed: Username already exists.");
                 }
@@ -89,21 +89,21 @@ namespace XeroProducts.BL.Identity
             if (!PasswordsMatch(user.HashedPassword, user.Salt, userDto.Password))
             {
                 //generate a new salt
-                var salt = _passwordProvider.GenerateSalt();
+                var salt = PasswordProvider.GenerateSalt();
 
                 //combine given password and salt to get hashed password
-                user.HashedPassword = _passwordProvider.HashPassword(userDto.Password, salt);
+                user.HashedPassword = PasswordProvider.HashPassword(userDto.Password, salt);
 
                 //convert and update salt 
                 user.Salt = Convert.ToBase64String(salt);
             }
 
-            await _userDALProvider.UpdateUser(user);
+            await UserDALProvider.UpdateUser(user);
         }
 
-        public async Task DeleteUser(Guid id)
+        public virtual async Task DeleteUser(Guid id)
         {
-            var user = await _userDALProvider.GetUser(id);
+            var user = await UserDALProvider.GetUser(id);
 
             if (user == null)
             {
@@ -115,7 +115,7 @@ namespace XeroProducts.BL.Identity
                 throw new SuperAdminDeletionAttemptException("Delete Failed: You cannot remove the super admin account. This risks the system becoming un-usable.");
             }
 
-            await _userDALProvider.DeleteUser(id);
+            await UserDALProvider.DeleteUser(id);
         }
 
         /// <summary>
@@ -125,10 +125,10 @@ namespace XeroProducts.BL.Identity
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<UserDto?> VerifyUserCredentials(string username, string password)
+        public virtual async Task<UserDto?> VerifyUserCredentials(string username, string password)
         {
             // Attempt to match the user on username
-            var user = await _userDALProvider.GetUser(username);
+            var user = await UserDALProvider.GetUser(username);
 
             // if there is not matching username, return null (give less feedback when verifying usernames/passwords in the system)
             if (user == null)
@@ -155,7 +155,7 @@ namespace XeroProducts.BL.Identity
         /// <returns></returns>
         private bool PasswordsMatch(string originalHashedPassword, string originalHashedSalt, string newPassword)
         {
-            return PasswordsMatch(originalHashedPassword, originalHashedSalt, newPassword, out var newHashedPassword);
+            return PasswordsMatch(originalHashedPassword, originalHashedSalt, newPassword, out _); //discard the out param (we dont need if with this method)
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace XeroProducts.BL.Identity
             Buffer.BlockCopy(storedSaltBytes, 0, saltedPassword, passwordBytes.Length, storedSaltBytes.Length);
 
             // Hash the concatenated value
-            newHashedPassword = _passwordProvider.HashPassword(newPassword, storedSaltBytes);
+            newHashedPassword = PasswordProvider.HashPassword(newPassword, storedSaltBytes);
 
             // Compare the entered password hash with the stored hash
             if (newHashedPassword != originalHashedPassword)

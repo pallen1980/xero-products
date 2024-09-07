@@ -7,11 +7,14 @@ using XeroProducts.BL.Interfaces;
 [Produces("application/json")]
 public class ProductController : ControllerBase
 {
-    private readonly IProductProvider _productProvider;
-    private readonly IProductOptionProvider _productOptionProvider;
+    private readonly Lazy<IProductProvider> _productProvider;
+    private readonly Lazy<IProductOptionProvider> _productOptionProvider;
 
-    public ProductController(IProductProvider productProvider,
-                             IProductOptionProvider productOptionProvider)
+    protected IProductProvider ProductProvider => _productProvider.Value;
+    protected IProductOptionProvider ProductOptionProvider => _productOptionProvider.Value;
+
+    public ProductController(Lazy<IProductProvider> productProvider,
+                             Lazy<IProductOptionProvider> productOptionProvider)
     {
         _productProvider = productProvider;
         _productOptionProvider = productOptionProvider;
@@ -26,10 +29,10 @@ public class ProductController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<ProductViewModel>> GetProduct(Guid id)
+    public virtual async Task<ActionResult<ProductViewModel>> GetProduct(Guid id)
     {
         //attempt to grab the matching product
-        var product = await _productProvider.GetProduct(id);
+        var product = await ProductProvider.GetProduct(id);
 
         //raise an exception if no matching product was found...
         if (product == null)
@@ -47,13 +50,13 @@ public class ProductController : ControllerBase
     [HttpPost]
     [Authorize]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateProductFormModel productModel)
+    public virtual async Task<ActionResult<ProductViewModel>> Create([FromBody] CreateProductFormModel productModel)
     {
         //Convert the model to a type that can be saved
         var product = productModel.ToDto();
 
         //Save the type
-        await _productProvider.Save(product);
+        await ProductProvider.Save(product);
 
         //Return successfully "Created" action including the newly created product (and it's generated ID)
         return CreatedAtAction(nameof(Create), new ProductViewModel(product));
@@ -69,10 +72,10 @@ public class ProductController : ControllerBase
     [Authorize]
     [Route("{id}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<ActionResult<ProductViewModel>> Update(Guid id, [FromBody] UpdateProductFormModel product)
+    public virtual async Task<ActionResult<ProductViewModel>> Update(Guid id, [FromBody] UpdateProductFormModel product)
     {
         //try and grab the existing product
-        var orig = await _productProvider.GetProduct(id);
+        var orig = await ProductProvider.GetProduct(id);
 
         //if we cant find a match, raise an exception...
         if (orig == null)
@@ -87,7 +90,7 @@ public class ProductController : ControllerBase
         orig.DeliveryPrice = product.DeliveryPrice;
 
         //save the updated properties
-        await _productProvider.Save(orig);
+        await ProductProvider.Save(orig);
 
         //return a Success along with the updated product
         return Ok(new ProductViewModel(orig));
@@ -101,10 +104,10 @@ public class ProductController : ControllerBase
     [HttpDelete]
     [Authorize]
     [Route("{id}")]
-    public async Task<ActionResult<Guid>> Delete(Guid id)
+    public virtual async Task<ActionResult<Guid>> Delete(Guid id)
     {
         //Delete the product
-        await _productProvider.Delete(id);
+        await ProductProvider.Delete(id);
 
         //return Success along with the id of the product that was deleted
         return Ok(id);
@@ -122,10 +125,10 @@ public class ProductController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("{productId}/option/{id}")]
-    public async Task<ActionResult<ProductOptionViewModel>> GetOption(Guid productId, Guid id)
+    public virtual async Task<ActionResult<ProductOptionViewModel>> GetOption(Guid productId, Guid id)
     {
         //Grab the option that matches the id
-        var option = await _productOptionProvider.GetProductOption(id);
+        var option = await ProductOptionProvider.GetProductOption(id);
 
         //if we didnt find one, raise an exception
         if (option.IsNew)
@@ -147,13 +150,13 @@ public class ProductController : ControllerBase
     [Authorize]
     [Route("{productId}/option")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<ActionResult<ProductOptionViewModel>> CreateOption(Guid productId, [FromBody] CreateProductOptionFormModel option)
+    public virtual async Task<ActionResult<ProductOptionViewModel>> CreateOption(Guid productId, [FromBody] CreateProductOptionFormModel option)
     {
         //convert the option to a type we can save
         var productOption = option.ToDto(productId);
 
         //save the new option
-        await _productOptionProvider.Save(productOption);
+        await ProductOptionProvider.Save(productOption);
 
         //return a successful Created action and the newly created option (which will contain its newly generated ID)
         return CreatedAtAction(nameof(CreateOption), new ProductOptionViewModel(productOption));
@@ -170,10 +173,10 @@ public class ProductController : ControllerBase
     [Authorize]
     [Route("{productId}/option/{id}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<ActionResult<ProductOptionViewModel>> UpdateOption(Guid productId, Guid id, [FromBody] UpdateProductOptionFormModel option)
+    public virtual async Task<ActionResult<ProductOptionViewModel>> UpdateOption(Guid productId, Guid id, [FromBody] UpdateProductOptionFormModel option)
     {
         //attempt to grab the matching option from persisted storage
-        var orig = await _productOptionProvider.GetProductOption(id);
+        var orig = await ProductOptionProvider.GetProductOption(id);
 
         //if we didnt find it, raise an exception
         if (orig.IsNew)
@@ -186,7 +189,7 @@ public class ProductController : ControllerBase
         orig.Description = option.Description ?? "";
 
         //save the updated option
-        await _productOptionProvider.Save(orig);
+        await ProductOptionProvider.Save(orig);
 
         //return a Success code along with the updated option
         return Ok(new ProductOptionViewModel(orig));
@@ -200,10 +203,10 @@ public class ProductController : ControllerBase
     [HttpDelete]
     [Authorize]
     [Route("{productId}/options/{id}")]
-    public async Task<ActionResult<Guid>> DeleteOption(Guid productId, Guid id)
+    public virtual async Task<ActionResult<Guid>> DeleteOption(Guid productId, Guid id)
     {
         //delete the matching option
-        await _productOptionProvider.Delete(id);
+        await ProductOptionProvider.Delete(id);
 
         //return a Success along with the ID of the deleted option
         return Ok(id);

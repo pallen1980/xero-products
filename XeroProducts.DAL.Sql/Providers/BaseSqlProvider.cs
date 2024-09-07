@@ -6,16 +6,17 @@ namespace XeroProducts.DAL.Sql.Providers
 {
     public abstract class BaseSqlProvider
     {
-        protected readonly IConfiguration _configuration;
+        private readonly Lazy<IConfiguration> _configuration;
+        protected IConfiguration Configuration => _configuration.Value;
 
-        public BaseSqlProvider(IConfiguration configuration)
+        public BaseSqlProvider(Lazy<IConfiguration> configuration)
         {
             _configuration = configuration;
         }
 
         public virtual SqlConnection NewConnection()
         {
-            var connectionString = _configuration.GetConnectionString("Default")?
+            var connectionString = Configuration.GetConnectionString("Default")?
                 .Replace("{DataDirectory}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\App_Data");
 
             return new SqlConnection(connectionString);
