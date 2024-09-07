@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using XeroProducts.DAL.Helpers;
 using XeroProducts.Types;
 
 namespace XeroProducts.DAL.EntityFramework.Sql.Contexts
@@ -34,10 +30,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Configuration.GetConnectionString("Default")?
-                                    .Replace("{DataDirectory}", AppContext.BaseDirectory + "App_Data");
-
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(ConnectionHelper.GetDefaultConnectionString(Configuration));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
