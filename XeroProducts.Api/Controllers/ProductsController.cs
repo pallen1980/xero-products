@@ -21,6 +21,8 @@ namespace XeroProducts.Controllers
             _productOptionProvider = productOptionProvider;
         }
 
+        #region Product_Endpoints
+
         /// <summary>
         /// Grab All Products
         /// </summary>
@@ -45,6 +47,10 @@ namespace XeroProducts.Controllers
             return Ok(new ProductsViewModel(await ProductProvider.GetProducts(name)));
         }
 
+        #endregion
+
+        #region ProductOption_Endpoints
+
         /// <summary>
         /// Return all the options for the given product ID
         /// </summary>
@@ -57,5 +63,6 @@ namespace XeroProducts.Controllers
             return Ok(new ProductOptionsViewModel(await ProductOptionProvider.GetProductOptions(productId)));
         }
 
+        #endregion
     }
 }

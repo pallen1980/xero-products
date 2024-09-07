@@ -14,11 +14,11 @@ namespace XeroProducts.BL.UnitTests.Providers
             //Arrange
             var testData = ProductOptionTestData.Create(3);
 
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(testData);
 
             var expectedItem = testData.FirstOrDefault();
 
-            var sut = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var sut = new ProductOptionProvider(iProductOptionDALProviderMock);
 
 
             //Act
@@ -40,11 +40,11 @@ namespace XeroProducts.BL.UnitTests.Providers
             //Arrange
             var testData = ProductOptionTestData.Create(3);
 
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(testData);
 
             var productId = testData.Select(td => td.ProductId).Distinct().ElementAt(elementIndex);
 
-            var sut = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var sut = new ProductOptionProvider(iProductOptionDALProviderMock);
 
 
             //Act
@@ -64,7 +64,7 @@ namespace XeroProducts.BL.UnitTests.Providers
             var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(testData);
 
             var newOption = new ProductOptionDto()
             {
@@ -74,7 +74,7 @@ namespace XeroProducts.BL.UnitTests.Providers
                 ProductId = Guid.NewGuid()
             };
 
-            var sut = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var sut = new ProductOptionProvider(iProductOptionDALProviderMock);
 
 
             //Act
@@ -101,7 +101,7 @@ namespace XeroProducts.BL.UnitTests.Providers
             var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(testData);
 
             var existingOption = new ProductOptionDto(false)
             {
@@ -110,7 +110,7 @@ namespace XeroProducts.BL.UnitTests.Providers
                 Description = "Updated Description"
             };
 
-            var sut = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var sut = new ProductOptionProvider(iProductOptionDALProviderMock);
 
 
             //Act
@@ -135,11 +135,11 @@ namespace XeroProducts.BL.UnitTests.Providers
             var testData = ProductOptionTestData.Create();
             var initialTestDataCount = testData.Count;
 
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(testData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(testData);
 
             var id = testData.ElementAt(elementIndex).Id;
 
-            var sut = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var sut = new ProductOptionProvider(iProductOptionDALProviderMock);
 
 
             //Act

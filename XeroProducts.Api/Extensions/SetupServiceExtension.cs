@@ -18,6 +18,7 @@ namespace XeroProducts.Api.Extensions
         {
             //Allow dependencies to use builder.Configuration without needing to pass it as an argument to methods
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+            builder.Services.AddSingleton(provider => new Lazy<IConfiguration>(() => provider.GetRequiredService<IConfiguration>()));
 
             // - DAL
             //   check appsettings, if we have a type, use the preferred DAL type

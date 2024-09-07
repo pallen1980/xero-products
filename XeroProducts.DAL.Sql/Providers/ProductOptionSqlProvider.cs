@@ -7,11 +7,11 @@ namespace XeroProducts.DAL.Sql.Providers
 {
     public class ProductOptionSqlProvider : BaseSqlProvider, IProductOptionDALProvider
     {
-        public ProductOptionSqlProvider(IConfiguration configuration) : base(configuration)
+        public ProductOptionSqlProvider(Lazy<IConfiguration> configuration) : base(configuration)
         {
         }
 
-        public async Task<ProductOption?> GetProductOption(Guid productOptionId)
+        public virtual async Task<ProductOption?> GetProductOption(Guid productOptionId)
         {
             using (var connection = NewConnection())
             {
@@ -38,7 +38,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<ProductOptions> GetProductOptions(Guid productId)
+        public virtual async Task<ProductOptions> GetProductOptions(Guid productId)
         {
             using (var connection = NewConnection())
             {
@@ -61,7 +61,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<Guid> CreateProductOption(ProductOption productOption)
+        public virtual async Task<Guid> CreateProductOption(ProductOption productOption)
         {
             using (var connection = NewConnection())
             {
@@ -74,7 +74,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task UpdateProductOption(ProductOption productOption)
+        public virtual async Task UpdateProductOption(ProductOption productOption)
         {
             using (var connection = NewConnection())
             {
@@ -85,7 +85,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task DeleteProductOption(Guid productOptionId)
+        public virtual async Task DeleteProductOption(Guid productOptionId)
         {
             using (var connection = NewConnection())
             {

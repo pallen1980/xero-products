@@ -9,11 +9,12 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 {
     public abstract class BaseEntityFrameworkSqlProvider
     {
-        protected IXeroProductsContext Context;
+        private readonly Lazy<IXeroProductsContext> _context;
+        protected IXeroProductsContext Context => _context.Value;
 
-        public BaseEntityFrameworkSqlProvider(IXeroProductsContext context)
+        public BaseEntityFrameworkSqlProvider(Lazy<IXeroProductsContext> context)
         {
-            Context = context;
+            _context = context;
         }
     }
 }

@@ -15,12 +15,12 @@ namespace XeroProducts.BL.UnitTests.Providers
             //Arrange
             var testData = ProductTestData.Create();
 
-            var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
-            var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
+            var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(testData);
+            var iProductOptionProviderMock = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>().Object);
 
             var expectedItem = testData.FirstOrDefault();
 
-            var sut = new ProductProvider(iProductDALProviderMock.Object, iProductOptionProviderMock.Object);
+            var sut = new ProductProvider(iProductDALProviderMock, iProductOptionProviderMock);
 
 
             //Act
@@ -42,12 +42,12 @@ namespace XeroProducts.BL.UnitTests.Providers
             //Arrange
             var testData = ProductTestData.Create();
 
-            var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
-            var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
+            var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(testData);
+            var iProductOptionProviderMock = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>().Object);
 
             var expectedItem = testData.ElementAt(elementIndex);
 
-            var sut = new ProductProvider(iProductDALProviderMock.Object, iProductOptionProviderMock.Object);
+            var sut = new ProductProvider(iProductDALProviderMock, iProductOptionProviderMock);
 
 
             //Act
@@ -67,8 +67,8 @@ namespace XeroProducts.BL.UnitTests.Providers
             var testData = ProductTestData.Create();
             var initialTestDataCount = testData.Count;
 
-            var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
-            var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
+            var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(testData);
+            var iProductOptionProviderMock = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>().Object);
 
             var newProduct = new ProductDto()
             {
@@ -79,7 +79,7 @@ namespace XeroProducts.BL.UnitTests.Providers
                 DeliveryPrice = 2.0M
             };
 
-            var sut = new ProductProvider(iProductDALProviderMock.Object, iProductOptionProviderMock.Object);
+            var sut = new ProductProvider(iProductDALProviderMock, iProductOptionProviderMock);
 
 
             //Act
@@ -107,8 +107,8 @@ namespace XeroProducts.BL.UnitTests.Providers
             var testData = ProductTestData.Create(10);
             var initialTestDataCount = testData.Count;
 
-            var iProductDALProviderMock = IProductDALProviderMock.GetMock(testData);
-            var iProductOptionProviderMock = new Mock<IProductOptionProvider>();
+            var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(testData);
+            var iProductOptionProviderMock = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>().Object);
 
             var existingProduct = new ProductDto(false)
             {
@@ -119,7 +119,7 @@ namespace XeroProducts.BL.UnitTests.Providers
                 DeliveryPrice = 2.0M
             };
 
-            var sut = new ProductProvider(iProductDALProviderMock.Object, iProductOptionProviderMock.Object);
+            var sut = new ProductProvider(iProductDALProviderMock, iProductOptionProviderMock);
 
 
             //Act
@@ -147,13 +147,13 @@ namespace XeroProducts.BL.UnitTests.Providers
             var productOptionsTestData = ProductOptionTestData.Create(productsTestData.Select(p => p.Id).ToList());
             var initialOptionsTestDataCount = productOptionsTestData.Count;
 
-            var iProductDALProviderMock = IProductDALProviderMock.GetMock(productsTestData);
-            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetMock(productOptionsTestData);
-            var iProductOptionProvider = new ProductOptionProvider(iProductOptionDALProviderMock.Object);
+            var iProductDALProviderMock = IProductDALProviderMock.GetLazyMock(productsTestData);
+            var iProductOptionDALProviderMock = IProductOptionDALProviderMock.GetLazyMock(productOptionsTestData);
+            var iProductOptionProvider = new Lazy<IProductOptionProvider>(new Mock<IProductOptionProvider>(iProductOptionDALProviderMock).Object);
 
             var id = productsTestData.ElementAt(elementIndex).Id;
 
-            var sut = new ProductProvider(iProductDALProviderMock.Object, iProductOptionProvider);
+            var sut = new ProductProvider(iProductDALProviderMock, iProductOptionProvider);
 
 
             //Act

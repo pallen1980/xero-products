@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
@@ -12,7 +7,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 {
     public class UserEntityFrameworkSqlProvider : BaseEntityFrameworkSqlProvider, IUserDALProvider
     {
-        public UserEntityFrameworkSqlProvider(IXeroProductsContext context) : base(context)
+        public UserEntityFrameworkSqlProvider(Lazy<IXeroProductsContext> context) : base(context)
         {
 
         }
@@ -22,7 +17,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public async Task<bool> UserExists(string username)
+        public virtual async Task<bool> UserExists(string username)
         {
             return await Context.Users.AnyAsync(u => u.Username == username);
         }
@@ -32,7 +27,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<User?> GetUser(Guid Id)
+        public virtual async Task<User?> GetUser(Guid Id)
         {
             return await Context.Users.SingleOrDefaultAsync(u => u.Id == Id);
         }
@@ -42,7 +37,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public async Task<User?> GetUser(string username)
+        public virtual async Task<User?> GetUser(string username)
         {
             return await Context.Users.SingleOrDefaultAsync(u => u.Username == username);
         }
@@ -52,7 +47,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<Guid> CreateUser(User user)
+        public virtual async Task<Guid> CreateUser(User user)
         {
             await Context.Users.AddAsync(user);
 
@@ -67,7 +62,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="user"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task UpdateUser(User user)
+        public virtual async Task UpdateUser(User user)
         {
             var dbUser = await Context.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
 
@@ -92,7 +87,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task DeleteUser(Guid id)
+        public virtual async Task DeleteUser(Guid id)
         {
             var user = await Context.Users.SingleOrDefaultAsync(u => u.Id == id);
 

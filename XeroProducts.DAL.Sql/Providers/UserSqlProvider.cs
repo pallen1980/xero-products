@@ -7,11 +7,11 @@ namespace XeroProducts.DAL.Sql.Providers
 {
     public class UserSqlProvider : BaseSqlProvider, IUserDALProvider
     {
-        public UserSqlProvider(IConfiguration configuration) : base(configuration)
+        public UserSqlProvider(Lazy<IConfiguration> configuration) : base(configuration)
         {
         }
 
-        public async Task<bool> UserExists(string username)
+        public virtual async Task<bool> UserExists(string username)
         {
             //Attempt to bring back any user that matches the username
 
@@ -33,7 +33,7 @@ namespace XeroProducts.DAL.Sql.Providers
             return true;
         }
 
-        public async Task<User?> GetUser(Guid Id)
+        public virtual async Task<User?> GetUser(Guid Id)
         {
             using (var connection = NewConnection())
             {
@@ -61,7 +61,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<User?> GetUser(string username)
+        public virtual async Task<User?> GetUser(string username)
         {
             using (var connection = NewConnection())
             {
@@ -89,7 +89,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<Guid> CreateUser(User user)
+        public virtual async Task<Guid> CreateUser(User user)
         {
             using (var connection = NewConnection())
             {
@@ -103,7 +103,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task UpdateUser(User user)
+        public virtual async Task UpdateUser(User user)
         {
             using (var connection = NewConnection())
             {
@@ -122,7 +122,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task DeleteUser(Guid id)
+        public virtual async Task DeleteUser(Guid id)
         {
             using (var connection = NewConnection())
             {

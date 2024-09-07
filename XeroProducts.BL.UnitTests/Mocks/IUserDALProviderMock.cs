@@ -1,10 +1,4 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XAct.Authentication;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
 
@@ -12,6 +6,9 @@ namespace XeroProducts.BL.UnitTests.Mocks
 {
     internal interface IUserDALProviderMock
     {
+        public static Lazy<IUserDALProvider> GetLazyMock(List<User> testData)
+            => new Lazy<IUserDALProvider>(GetMock(testData).Object);
+
         public static Mock<IUserDALProvider> GetMock(List<User> testData)
         {
             var mock = new Mock<IUserDALProvider>();

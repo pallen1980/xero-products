@@ -14,12 +14,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             //Arrange
             var testData = UserTestData.Create();
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var id = testData.First().Id;
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act
             var result = await sut.GetUser(id);
@@ -35,12 +35,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             //Arrange
             var testData = UserTestData.Create();
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var id = Guid.Empty;
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act/Assert
             Assert.ThrowsAsync<KeyNotFoundException>(() => sut.GetUser(id));
@@ -53,8 +53,8 @@ namespace XeroProducts.BL.UnitTests.Identity
             var testData = UserTestData.Create();
             var originalTestDataCount = testData.Count;
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
             
             var newUser = new UserDto()
             {
@@ -65,7 +65,7 @@ namespace XeroProducts.BL.UnitTests.Identity
                 Password = "password1"
             };
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act
             var result = await sut.CreateUser(newUser);
@@ -97,10 +97,10 @@ namespace XeroProducts.BL.UnitTests.Identity
                 Password = "password1"
             };
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act/Assert
             Assert.ThrowsAsync<AlreadyExistsException>(() => sut.CreateUser(newUser));
@@ -117,8 +117,8 @@ namespace XeroProducts.BL.UnitTests.Identity
             var testData = UserTestData.Create();
             var originalTestDataCount = testData.Count;
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var existingUser = new UserDto()
             {
@@ -130,7 +130,7 @@ namespace XeroProducts.BL.UnitTests.Identity
                 Password = "password1"
             };
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act
             await sut.UpdateUser(existingUser);
@@ -159,10 +159,10 @@ namespace XeroProducts.BL.UnitTests.Identity
                 Password = "password1"
             };
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act/Assert
             Assert.ThrowsAsync<KeyNotFoundException>(() => sut.UpdateUser(existingUser));
@@ -175,12 +175,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             var testData = UserTestData.Create();
             var originalTestDataCount = testData.Count;
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var id = testData.First(p => !p.IsSuperAdmin).Id;
             
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act
             await sut.DeleteUser(id);
@@ -197,12 +197,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             var testData = UserTestData.Create();
             var originalTestDataCount = testData.Count;
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var id = testData.First(p => p.IsSuperAdmin).Id;
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act/Assert
             Assert.ThrowsAsync<SuperAdminDeletionAttemptException>(() => sut.DeleteUser(id));
@@ -215,12 +215,12 @@ namespace XeroProducts.BL.UnitTests.Identity
             var testData = UserTestData.Create();
             var originalTestDataCount = testData.Count;
 
-            var iPasswordProviderMock = IPasswordProviderMock.GetMock();
-            var iUserDALProviderMock = IUserDALProviderMock.GetMock(testData);
+            var iPasswordProviderMock = IPasswordProviderMock.GetLazyMock();
+            var iUserDALProviderMock = IUserDALProviderMock.GetLazyMock(testData);
 
             var id = Guid.Empty;
 
-            var sut = new UserProvider(iPasswordProviderMock.Object, iUserDALProviderMock.Object);
+            var sut = new UserProvider(iPasswordProviderMock, iUserDALProviderMock);
 
             //Act/Assert
             Assert.ThrowsAsync<KeyNotFoundException>(() => sut.DeleteUser(id));

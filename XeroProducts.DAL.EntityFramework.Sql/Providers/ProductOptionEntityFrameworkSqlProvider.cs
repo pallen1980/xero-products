@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
@@ -12,7 +7,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 {
     public class ProductOptionEntityFrameworkSqlProvider : BaseEntityFrameworkSqlProvider, IProductOptionDALProvider
     {
-        public ProductOptionEntityFrameworkSqlProvider(IXeroProductsContext context) : base(context)
+        public ProductOptionEntityFrameworkSqlProvider(Lazy<IXeroProductsContext> context) : base(context)
         {
 
         }
@@ -22,7 +17,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="productOptionId"></param>
         /// <returns></returns>
-        public async Task<ProductOption?> GetProductOption(Guid productOptionId)
+        public virtual async Task<ProductOption?> GetProductOption(Guid productOptionId)
         {
             return await Context.ProductOptions.SingleOrDefaultAsync(po => po.Id == productOptionId);
         }
@@ -32,7 +27,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task<ProductOptions> GetProductOptions(Guid productId)
+        public virtual async Task<ProductOptions> GetProductOptions(Guid productId)
         {
             var options = await Context.ProductOptions
                             .Where(po => po.ProductId == productId)
@@ -46,7 +41,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="productOption"></param>
         /// <returns></returns>
-        public async Task<Guid> CreateProductOption(ProductOption productOption)
+        public virtual async Task<Guid> CreateProductOption(ProductOption productOption)
         {
             await Context.ProductOptions.AddAsync(productOption);
 
@@ -61,7 +56,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="productOption"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task UpdateProductOption(ProductOption productOption)
+        public virtual async Task UpdateProductOption(ProductOption productOption)
         {
             var dbProductOption = await Context.ProductOptions.SingleOrDefaultAsync(po => po.Id == productOption.Id);
 
@@ -82,7 +77,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="productOptionId"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task DeleteProductOption(Guid productOptionId)
+        public virtual async Task DeleteProductOption(Guid productOptionId)
         {
             var productOption = await Context.ProductOptions.SingleOrDefaultAsync(po => po.Id == productOptionId);
 
