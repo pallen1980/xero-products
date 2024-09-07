@@ -67,8 +67,66 @@ Pass: J3tP%ck!
 
 Note: You'll also find a script... TSQL Create Hashed Password.sql which will allow you to create your own hashed password, which you can replace the one in the script before running it.
 
-## Release Notes: 
------------------
+## User Guide
+-------------
+
+### Unauthenticated/Open Endpoints
+----------------------------------
+
+The following endpoints are open and can be hit without any authentication...
+
+POST /api/auth/login
+GET /api/products
+GET /api/products/{name}
+GET /api/product/{id}
+GET /api/product/{productId}/options
+GET /api/product/{productId}/option/{id}
+GET /api/user/{id}
+
+### Authenticated Endpoints
+---------------------------
+
+The other endpoints, require authentication via a jwt token.
+
+By default, the system has an admin account which you can auth with, and create more users.
+
+You can login to the admin account with the following details...
+
+POST /api/auth/login
+username: system.admin
+password: Password1
+
+The resulting token will then allow you to hit the other endpoints using this as the "Bearer: {token}" in the head of each request.
+
+The remaining endpoints that require authentication are...
+
+For product CRUD...
+POST /api/product/{id}
+PUT /api/product/{id}
+DELETE /api/product/{id}
+
+For product option CRUD
+POST /api/product/{productId}/option
+PUT /api/product/{productId}/option/{id}
+DELETE /api/product{productId}/options/{id}
+
+For user CRUD
+POST /api/user
+PUT /api/user/{id}
+DELETE /api/user/{id}
+
+NOTE: running the solution in Debug/Development mode will enable Swagger and allow you to see and test all the endpoint from a web front-end.
+
+### Test Web Server
+-------------------
+
+I have set up a test server that will be accessible for a limited time. You can access the solution, which is set up in Debug/Development mode, with Swagger enabled, from the following url...
+
+http://xero-products.duckdns.org (no ssl certificate is applied, so you'll need to ensure you access it at http://)
+
+
+## Release Notes
+----------------
 20240830 - Renamed/Rebranded to XeroProducts (from "refactorthis"). Better fitting descriptive title for the solution/project  
 20240830 - Upversioned Api project from .Net Framework 4.5 to .Net 8.0 (Improved support for future devwork, security, compatibility, etc)  
 20240830 - Now using Swagger/OpenAPI (for better documentation)  
@@ -90,3 +148,4 @@ Note: You'll also find a script... TSQL Create Hashed Password.sql which will al
 20240906 - Secured DAL connection strings to app-config/environment-variables  
 20240907 - Lazy-loading injected providers across all layers + accompanying refactoring  
 20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)
+20240907 - Ensured the admin account cannot be removed or updated
