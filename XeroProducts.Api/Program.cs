@@ -62,10 +62,10 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         
         ValidateAudience = true,
-        ValidAudience = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
+        ValidAudience = builder.Configuration.GetValue<string>("XeroProducts:Auth:JwtConfig:ValidAudience"),
         
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
+        ValidIssuer = builder.Configuration.GetValue<string>("XeroProducts:Auth:JwtConfig:ValidIssuer"),
     };
 });
 

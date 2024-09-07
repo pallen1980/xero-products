@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using XeroProducts.DAL.Helpers;
 
 namespace XeroProducts.DAL.Sql.Providers
 {
@@ -16,10 +17,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
         public virtual SqlConnection NewConnection()
         {
-            var connectionString = Configuration.GetConnectionString("Default")?
-                .Replace("{DataDirectory}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\App_Data");
-
-            return new SqlConnection(connectionString);
+            return new SqlConnection(ConnectionHelper.GetDefaultConnectionString(Configuration));
         }
     }
 }
