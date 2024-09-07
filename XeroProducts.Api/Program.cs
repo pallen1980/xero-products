@@ -29,6 +29,8 @@ builder.Services.AddSwaggerGen(option =>
         Scheme = "Bearer"
     });
 
+    option.IncludeXmlComments($"{AppContext.BaseDirectory}XeroProducts.Api.XML");
+
     option.OperationFilter<AuthResponseOperationFilter>();
 });
 

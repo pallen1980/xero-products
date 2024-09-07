@@ -21,7 +21,7 @@ This improved version of the Web API retains the existing functionality to allow
 - Authorization: Some endpoints are now locked down unless signed-in/authed  
 - ORM support with EntityFramework: Greater DB abstraction, faster dev-time, and out-of-the-box support for more DB platforms  
 - Easy to understand fully-commented clean code  
-- Added SQL script for DB Creation & Data Population to support easier setup with external DBs
+- Added SQL script for DB Creation & Data Population to support easier setup with external DBs  
 
 ## Requirements:
 ----------------
@@ -75,13 +75,13 @@ Note: You'll also find a script... TSQL Create Hashed Password.sql which will al
 
 The following endpoints are open and can be hit without any authentication...
 
-POST /api/auth/login
-GET /api/products
-GET /api/products/{name}
-GET /api/product/{id}
-GET /api/product/{productId}/options
-GET /api/product/{productId}/option/{id}
-GET /api/user/{id}
+POST /api/auth/login  
+GET /api/products  
+GET /api/products/{name}  
+GET /api/product/{id}  
+GET /api/product/{productId}/options  
+GET /api/product/{productId}/option/{id}  
+GET /api/user/{id}  
 
 ### Authenticated Endpoints
 ---------------------------
@@ -92,37 +92,37 @@ By default, the system has an admin account which you can auth with, and create 
 
 You can login to the admin account with the following details...
 
-POST /api/auth/login
-username: system.admin
-password: Password1
+POST /api/auth/login  
+username: system.admin  
+password: Password1  
 
-The resulting token will then allow you to hit the other endpoints using this as the "Bearer: {token}" in the head of each request.
+The resulting token will then allow you to hit the other endpoints using this as the "Bearer: {token}" in the head of each request.  
 
-The remaining endpoints that require authentication are...
+The remaining endpoints that require authentication are...  
 
-For product CRUD...
-POST /api/product/{id}
-PUT /api/product/{id}
-DELETE /api/product/{id}
+For product CRUD...  
+POST /api/product/{id}  
+PUT /api/product/{id}  
+DELETE /api/product/{id}  
 
-For product option CRUD
-POST /api/product/{productId}/option
-PUT /api/product/{productId}/option/{id}
-DELETE /api/product{productId}/options/{id}
+For product option CRUD...  
+POST /api/product/{productId}/option  
+PUT /api/product/{productId}/option/{id}  
+DELETE /api/product{productId}/options/{id}  
 
-For user CRUD
-POST /api/user
-PUT /api/user/{id}
-DELETE /api/user/{id}
+For user CRUD...  
+POST /api/user  
+PUT /api/user/{id}  
+DELETE /api/user/{id}  
 
-NOTE: running the solution in Debug/Development mode will enable Swagger and allow you to see and test all the endpoint from a web front-end.
+NOTE: running the solution in Debug/Development mode will enable Swagger and allow you to see and test all the endpoint from a web front-end.  
 
 ### Test Web Server
 -------------------
 
-I have set up a test server that will be accessible for a limited time. You can access the solution, which is set up in Debug/Development mode, with Swagger enabled, from the following url...
+I have set up a test server that will be accessible for a limited time. You can access the solution, which is set up in Debug/Development mode, with Swagger enabled, from the following url...  
 
-http://xero-products.duckdns.org (no ssl certificate is applied, so you'll need to ensure you access it at http://)
+http://xero-products.duckdns.org (no ssl certificate is applied, so you'll need to ensure you access it at http://)  
 
 
 ## Release Notes
@@ -147,5 +147,5 @@ http://xero-products.duckdns.org (no ssl certificate is applied, so you'll need 
 20240906 - Added EntityFramework support to DAL providers  
 20240906 - Secured DAL connection strings to app-config/environment-variables  
 20240907 - Lazy-loading injected providers across all layers + accompanying refactoring  
-20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)
-20240907 - Ensured the admin account cannot be removed or updated
+20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)  
+20240907 - Ensured the admin account cannot be removed or updated  

@@ -57,6 +57,12 @@ namespace XeroProducts.Api.Controllers
             return CreatedAtAction(nameof(Create), new UserViewModel(userDto));
         }
 
+        /// <summary>
+        /// Find the user matching the given ID, and update it with the details given in the body
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPut]
         [Authorize]
         [Route("{id}")]
