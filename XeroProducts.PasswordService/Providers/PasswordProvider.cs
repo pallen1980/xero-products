@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using XeroProducts.PasswordService.Interfaces;
 using XeroProducts.KeyGeneration;
-using XSystem.Security.Cryptography;
 
 namespace XeroProducts.PasswordService.Providers
 {
@@ -14,7 +13,7 @@ namespace XeroProducts.PasswordService.Providers
 
         public virtual string HashPassword(string password, byte[] salt)
         {
-            using (var sha512 = new SHA512Managed())
+            using (var sha512 = System.Security.Cryptography.SHA512.Create())
             {
                 byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
                 byte[] saltedPassword = new byte[passwordBytes.Length + salt.Length];
