@@ -35,13 +35,14 @@ You'll need to install the following to build/run the solution...
 2. Open a cmd prompt to the root folder  
 3. Run... Build Solution.bat  
 4. Generate your own unique key (for Jwt Auth), Run... Generate Key.bat
-5. Add the following environment variables...
-  - Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}
-  - Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE}
-  - Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME}
-  - ConnectionString__Default = {DB connection string}
-  - DAL__Type = "EntityFramework" //[Optional] Can leave out/blank if you wish to use direct SQL commands when accessing DB
+5. Add the following environment variables (can be either User or System variables. Both will work)...  
+  - ConnectionString__Default = {DB connection string}  
+  - XeroProducts__Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}  
+  - XeroProducts__Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE}  
+  - XeroProducts__Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME}  
+  - XeroProducts__DAL__Type = "EntityFramework" //[Optional] Can leave out/blank if you wish to use direct SQL commands when accessing DB  
 
+NOTE: When adding environment variables, you will need to restart Visual Studio and/or command prompt/powershell you were using to initiate this project (as these values are cached on startup).  
 
 
 ## Release Notes: 
