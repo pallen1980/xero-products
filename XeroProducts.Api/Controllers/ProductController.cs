@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using XeroProducts.BL.Dtos.User;
 using XeroProducts.BL.Interfaces;
 
 [ApiController]
@@ -191,9 +192,9 @@ public class ProductController : ControllerBase
         var orig = await ProductOptionProvider.GetProductOption(id);
 
         //if we didnt find it, raise an exception
-        if (orig.IsNew)
+        if (orig == null || orig.IsNew)
         {
-            throw new KeyNotFoundException(string.Format("Option with ID: {0} was not found", id));
+            throw new KeyNotFoundException(string.Format("Update Failed: No matching product option found with ID: {0}", id));
         }
 
         //update the properties on the existing option
@@ -217,6 +218,13 @@ public class ProductController : ControllerBase
     [Route("{productId}/options/{id}")]
     public virtual async Task<ActionResult<Guid>> DeleteOption(Guid productId, Guid id)
     {
+        var option = await ProductOptionProvider.GetProductOption(id);
+
+        if (option == null || option.IsNew)
+        {
+            throw new KeyNotFoundException($"Delete Failed: No matching product option found with ID: {id}");
+        }
+
         //delete the matching option
         await ProductOptionProvider.Delete(id);
 
