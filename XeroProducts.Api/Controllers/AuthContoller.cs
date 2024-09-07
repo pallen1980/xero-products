@@ -6,11 +6,14 @@ using XeroProducts.BL.Interfaces;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    private readonly IJwtTokenProvider _jwtTokenProvider;
-    private readonly IUserProvider _userProvider;
+    private readonly Lazy<IJwtTokenProvider> _jwtTokenProvider;
+    private readonly Lazy<IUserProvider> _userProvider;
 
-    public AuthController(IUserProvider userProvider,
-                          IJwtTokenProvider jwtTokenProvider)
+    protected IJwtTokenProvider JwtTokenProvider => _jwtTokenProvider.Value;
+    protected IUserProvider UserProvider => _userProvider.Value;
+
+    public AuthController(Lazy<IUserProvider> userProvider,
+                          Lazy<IJwtTokenProvider> jwtTokenProvider)
     {
         _userProvider = userProvider;
         _jwtTokenProvider = jwtTokenProvider;
@@ -18,10 +21,10 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] UserCredentialFormModel userCredential)
+    public virtual async Task<ActionResult<string>> Login([FromBody] UserCredentialFormModel userCredential)
     {
         // Attempt to match usercredentials to a user
-        var user = await _userProvider.VerifyUserCredentials(userCredential.Username, userCredential.Password);
+        var user = await UserProvider.VerifyUserCredentials(userCredential.Username, userCredential.Password);
 
         // No matching user... raise an unauthorised exception
         if (user == null)
@@ -30,7 +33,7 @@ public class AuthController : ControllerBase
         }
 
         //logon was successful... Generate and return a JwtToken for the user
-        var token = _jwtTokenProvider.GenerateJwtToken(userCredential.Username);
+        var token = JwtTokenProvider.GenerateJwtToken(userCredential.Username);
 
         return Ok(token);
     }

@@ -63,6 +63,11 @@ namespace XeroProducts.BL.Security
         {
             var key = config.GetValue<string>("Auth:JwtConfig:Key");
 
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new Exception("Missing Configuration: Auth:JwtConfig:Key");
+            }
+
             return Encoding.ASCII.GetBytes(key);
         }
     }

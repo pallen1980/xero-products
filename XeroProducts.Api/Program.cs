@@ -51,6 +51,12 @@ if (builder.Configuration.GetValue<string>("DAL::Type")  == "EntityFramework")
     builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionEntityFrameworkSqlProvider>();
     builder.Services.AddScoped<IProductDALProvider, ProductEntityFrameworkSqlProvider>();
     builder.Services.AddScoped<IUserDALProvider, UserEntityFrameworkSqlProvider>();
+    
+    //For lazy-loading support
+    builder.Services.AddScoped(provider => new Lazy<IXeroProductsContext>(() => provider.GetRequiredService<IXeroProductsContext>()));
+    builder.Services.AddScoped(provider => new Lazy<IProductOptionDALProvider>(() => provider.GetRequiredService<IProductOptionDALProvider>()));
+    builder.Services.AddScoped(provider => new Lazy<IProductDALProvider>(() => provider.GetRequiredService<IProductDALProvider>()));
+    builder.Services.AddScoped(provider => new Lazy<IUserDALProvider>(() => provider.GetRequiredService<IUserDALProvider>()));
 }
 else
 {
@@ -58,14 +64,26 @@ else
     builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
     builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
     builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
+
+    //For lazy-loading support
+    builder.Services.AddScoped(provider => new Lazy<IProductOptionDALProvider>(() => provider.GetRequiredService<IProductOptionDALProvider>()));
+    builder.Services.AddScoped(provider => new Lazy<IProductDALProvider>(() => provider.GetRequiredService<IProductDALProvider>()));
+    builder.Services.AddScoped(provider => new Lazy<IUserDALProvider>(() => provider.GetRequiredService<IUserDALProvider>()));
 }
 // - BL
 builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
 builder.Services.AddScoped<IProductProvider, ProductProvider>();
 builder.Services.AddScoped<IUserProvider, UserProvider>();
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
+// - BL Lazy loading Support
+builder.Services.AddScoped(provider => new Lazy<IProductOptionProvider>(() => provider.GetRequiredService<IProductOptionProvider>()));
+builder.Services.AddScoped(provider => new Lazy<IProductProvider>(() => provider.GetRequiredService<IProductProvider>()));
+builder.Services.AddScoped(provider => new Lazy<IUserProvider>(() => provider.GetRequiredService<IUserProvider>()));
+builder.Services.AddScoped(provider => new Lazy<IJwtTokenProvider>(() => provider.GetRequiredService<IJwtTokenProvider>()));
+
 // - Tools
 builder.Services.AddScoped<IPasswordProvider, PasswordProvider>();
+builder.Services.AddScoped(provider => new Lazy<IPasswordProvider>(() => provider.GetRequiredService<IPasswordProvider>()));
 
 // Create our own validation filter to manually check modelstate and stop the automatic modelstate sending 400 responses for any validation failure
 builder.Services.AddScoped<ValidationFilterAttribute>();
