@@ -15,7 +15,7 @@ namespace XeroProducts.BL.UnitTests.Mocks
 
             //Mock method GetProduct(id):-
             mock.Setup(m => m.GetProduct(It.IsAny<Guid>()))
-                .Returns((Guid id) => Task.FromResult(testData.Single(p => p.Id == id)));
+                .Returns((Guid id) => Task.FromResult(testData.SingleOrDefault(p => p.Id == id)));
 
             //Mock method GetProducts(name):-
             mock.Setup(m => m.GetProducts(It.IsAny<string>()))

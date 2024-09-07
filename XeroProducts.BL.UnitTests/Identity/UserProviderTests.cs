@@ -25,7 +25,7 @@ namespace XeroProducts.BL.UnitTests.Identity
             var result = await sut.GetUser(id);
 
             //Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             Assert.That(id, Is.EqualTo(result.Id));
         }
 
@@ -71,8 +71,7 @@ namespace XeroProducts.BL.UnitTests.Identity
             var result = await sut.CreateUser(newUser);
 
             //Assert
-            Assert.IsNotNull(result);
-            Assert.That(Guid.Empty, Is.Not.EqualTo(result));
+            Assert.That(result, Is.Not.Empty);
             Assert.That(originalTestDataCount, Is.Not.EqualTo(testData.Count));
             Assert.That(originalTestDataCount + 1, Is.EqualTo(testData.Count));
         }
@@ -85,7 +84,7 @@ namespace XeroProducts.BL.UnitTests.Identity
 
             var testData = new List<Types.User>()
             {
-                new Types.User() { Id = Guid.NewGuid(), Username = duplicateUserName.ToString() }
+                new() { Id = Guid.NewGuid(), Username = duplicateUserName.ToString() }
             };
 
             var newUser = new UserDto()

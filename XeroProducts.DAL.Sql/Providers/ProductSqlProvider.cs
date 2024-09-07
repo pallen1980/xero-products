@@ -30,8 +30,8 @@ namespace XeroProducts.DAL.Sql.Providers
                     Id = Guid.Parse(rdr["Id"].ToString()),
                     Name = rdr["Name"].ToString(),
                     Description = DBNull.Value == rdr["Description"] ? null : rdr["Description"].ToString(),
-                    Price = decimal.Parse(rdr["Price"].ToString()),
-                    DeliveryPrice = decimal.Parse(rdr["DeliveryPrice"].ToString())
+                    Price = decimal.Parse(rdr["Price"].ToString() ?? "0.00"),
+                    DeliveryPrice = decimal.Parse(rdr["DeliveryPrice"].ToString() ?? "0.00")
                 };
             }
         }

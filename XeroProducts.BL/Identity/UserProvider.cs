@@ -26,12 +26,9 @@ namespace XeroProducts.BL.Identity
         {
             var user = await UserDALProvider.GetUser(id);
 
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"No matching user found with ID: {id}");
-            }
-
-            return new UserDto(user);
+            return user == null ?
+                throw new KeyNotFoundException($"No matching user found with ID: {id}")
+                : new UserDto(user);
         }
 
         public virtual async Task<Guid> CreateUser(UserDto userDto)
@@ -158,7 +155,7 @@ namespace XeroProducts.BL.Identity
         /// <returns></returns>
         private bool PasswordsMatch(string originalHashedPassword, string originalHashedSalt, string newPassword)
         {
-            return PasswordsMatch(originalHashedPassword, originalHashedSalt, newPassword, out var newHashedPassword);
+            return PasswordsMatch(originalHashedPassword, originalHashedSalt, newPassword, out _); //discard the out param (we dont need if with this method)
         }
 
         /// <summary>

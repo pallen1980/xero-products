@@ -14,10 +14,10 @@ namespace XeroProducts.PasswordService.UnitTests.Providers
             var result = sut.GenerateSalt();
 
             //Assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<byte[]>(result);
-            Assert.AreEqual(512, result.Length);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.InstanceOf<byte[]>());
+            Assert.That(result, Has.Length.EqualTo(512));
         }
 
         [Test]
@@ -33,9 +33,9 @@ namespace XeroProducts.PasswordService.UnitTests.Providers
             var result = sut.HashPassword(password, salt);
 
             //Assert
-            Assert.IsNotNull(result);
-            Assert.IsNotEmpty(result);
-            Assert.IsInstanceOf<string>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result, Is.InstanceOf<string>());
         }
     }
 }
