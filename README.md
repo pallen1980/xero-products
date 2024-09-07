@@ -28,20 +28,20 @@ This improved version of the Web API retains the existing functionality to allow
 You'll need to install the following to build/run the solution...  
 1. .Net 8 SDK
 
-
 ## Setup Guide:
 ---------------
 1. Clone & Pull the Repo  
 2. Open a cmd prompt to the root folder  
 3. Run... Build Solution.bat  
-4. Generate your own unique key (for Jwt Auth), Run... Generate Key.bat
-5. Add the following environment variables...
-  - Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}
-  - Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE}
-  - Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME}
-  - ConnectionString__Default = {DB connection string}
-  - DAL__Type = "EntityFramework" //[Optional] Can leave out/blank if you wish to use direct SQL commands when accessing DB
+4. Generate your own unique key (to secure Jwt Authentication), Run... Generate Key.bat
+5. Add the following environment variables (can be either User or System variables. Both will work)...  
+  - XeroProducts__ConnectionString__Default = {DB connection string}  
+  - XeroProducts__Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}  
+  - XeroProducts__Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE} //eg. localhost:5000 or the domain(s)/host(s) you wish to allow  
+  - XeroProducts__Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME} //eg. localhost:5000 or the domain(s)/host(s) you wish to allow  
+  - XeroProducts__DAL__Type = "SQL" //[Optional] Can leave out/blank if you wish to use Entityframework DAL, or set value to SQL for direct SQL commands when accessing DB  
 
+NOTE: When adding environment variables, you will need to restart Visual Studio and/or command prompt/powershell you were using to initiate this project (as these values are cached on startup).  
 
 
 ## Release Notes: 
