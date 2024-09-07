@@ -118,6 +118,18 @@ public class ProductController : ControllerBase
     #region ProductOption_Endpoints
 
     /// <summary>
+    /// Return all the options for the given product ID
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("{productId}/options")]
+    public virtual async Task<ActionResult<ProductOptionsViewModel>> GetOptions(Guid productId)
+    {
+        return Ok(new ProductOptionsViewModel(await ProductOptionProvider.GetProductOptions(productId)));
+    }
+
+    /// <summary>
     /// Grab the Option that matches the id
     /// </summary>
     /// <param name="productId"></param>
