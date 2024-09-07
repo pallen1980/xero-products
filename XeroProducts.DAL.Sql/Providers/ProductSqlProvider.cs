@@ -7,12 +7,12 @@ namespace XeroProducts.DAL.Sql.Providers
 {
     public class ProductSqlProvider : BaseSqlProvider, IProductDALProvider
     {
-        public ProductSqlProvider(IConfiguration configuration) 
+        public ProductSqlProvider(Lazy<IConfiguration> configuration) 
             : base(configuration)
         {
         }
 
-        public async Task<Product?> GetProduct(Guid id)
+        public virtual async Task<Product?> GetProduct(Guid id)
         {
             using (var connection = NewConnection())
             {
@@ -30,13 +30,13 @@ namespace XeroProducts.DAL.Sql.Providers
                     Id = Guid.Parse(rdr["Id"].ToString()),
                     Name = rdr["Name"].ToString(),
                     Description = DBNull.Value == rdr["Description"] ? null : rdr["Description"].ToString(),
-                    Price = decimal.Parse(rdr["Price"].ToString()),
-                    DeliveryPrice = decimal.Parse(rdr["DeliveryPrice"].ToString())
+                    Price = decimal.Parse(rdr["Price"].ToString() ?? "0.00"),
+                    DeliveryPrice = decimal.Parse(rdr["DeliveryPrice"].ToString() ?? "0.00")
                 };
             }
         }
 
-        public async Task<Products> GetProducts(string name = "")
+        public virtual async Task<Products> GetProducts(string name = "")
         {
             using (var connection = NewConnection())
             {
@@ -60,7 +60,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task<Guid> CreateProduct(Product product)
+        public virtual async Task<Guid> CreateProduct(Product product)
         {
             using (var connection = NewConnection())
             {
@@ -72,7 +72,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task UpdateProduct(Product product)
+        public virtual async Task UpdateProduct(Product product)
         {
             using (var connection = NewConnection())
             {
@@ -83,7 +83,7 @@ namespace XeroProducts.DAL.Sql.Providers
             }
         }
 
-        public async Task DeleteProduct(Guid id)
+        public virtual async Task DeleteProduct(Guid id)
         {
             using (var connection = NewConnection())
             {

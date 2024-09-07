@@ -11,15 +11,16 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Contexts
 {
     public partial class XeroProductsContext : DbContext, IXeroProductsContext
     {
-        private readonly IConfiguration _configuration;
+        private readonly Lazy<IConfiguration> _configuration;
+        protected IConfiguration Configuration => _configuration.Value;
 
-        public XeroProductsContext(IConfiguration configuration)
+        public XeroProductsContext(Lazy<IConfiguration> configuration)
         {
             _configuration = configuration;
         }
 
         public XeroProductsContext(DbContextOptions<XeroProductsContext> options,
-                                   IConfiguration configuration)
+                                   Lazy<IConfiguration> configuration)
             : base(options)
         {
             _configuration = configuration;
@@ -33,7 +34,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("Default"));
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Default"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

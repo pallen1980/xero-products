@@ -1,21 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using XeroProducts.BL.Interfaces;
 
 namespace XeroProducts.BL.Security
 {
     public class JwtTokenProvider : IJwtTokenProvider
     {
-        private readonly IConfiguration _configuration;
+        private readonly Lazy<IConfiguration> _configuration;
 
-        public JwtTokenProvider(IConfiguration configuration)
+        protected IConfiguration Configuration => _configuration.Value;
+
+        public JwtTokenProvider(Lazy<IConfiguration> configuration)
         {
             _configuration = configuration;
         }
@@ -25,9 +23,9 @@ namespace XeroProducts.BL.Security
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public string GenerateJwtToken(string userName)
+        public virtual string GenerateJwtToken(string userName)
         {
-            var keyBytes = JwtTokenProvider.GetJwtKeyBytes(_configuration);
+            var keyBytes = JwtTokenProvider.GetJwtKeyBytes(Configuration);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -40,11 +38,11 @@ namespace XeroProducts.BL.Security
                 ),
                 
                 IssuedAt = DateTime.UtcNow,
-                Issuer = _configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
+                Issuer = Configuration.GetValue<string>("Auth:JwtConfig:ValidIssuer"),
 
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 
-                Audience = _configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
+                Audience = Configuration.GetValue<string>("Auth:JwtConfig:ValidAudience"),
                 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -62,6 +60,11 @@ namespace XeroProducts.BL.Security
         public static byte[] GetJwtKeyBytes(IConfiguration config)
         {
             var key = config.GetValue<string>("Auth:JwtConfig:Key");
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new Exception("Missing Configuration: Auth:JwtConfig:Key");
+            }
 
             return Encoding.ASCII.GetBytes(key);
         }

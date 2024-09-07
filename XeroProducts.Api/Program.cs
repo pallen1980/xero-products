@@ -3,15 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using XeroProducts.BL.Security;
-using XeroProducts.BL.Interfaces;
-using XeroProducts.BL.Providers;
-using XeroProducts.DAL.Interfaces;
-using XeroProducts.DAL.Sql.Providers;
-using XeroProducts.BL.Identity;
-using XeroProducts.PasswordService.Interfaces;
-using XeroProducts.PasswordService.Providers;
-using XeroProducts.DAL.EntityFramework.Sql.Providers;
-using XeroProducts.DAL.EntityFramework.Sql.Contexts;
+using XeroProducts.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,32 +32,8 @@ builder.Services.AddSwaggerGen(option =>
     option.OperationFilter<AuthResponseOperationFilter>();
 });
 
-// DependencyInjection...
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-// - DAL
-//   check appsettings, if we have a type, use the preferred DAL type
-if (builder.Configuration.GetValue<string>("DAL::Type")  == "EntityFramework")
-{
-    //ORM / EntityFramework
-    builder.Services.AddScoped<IXeroProductsContext, XeroProductsContext>();
-    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionEntityFrameworkSqlProvider>();
-    builder.Services.AddScoped<IProductDALProvider, ProductEntityFrameworkSqlProvider>();
-    builder.Services.AddScoped<IUserDALProvider, UserEntityFrameworkSqlProvider>();
-}
-else
-{
-    //No appsettings for DAL::type, just use Direct SQL Command Providers
-    builder.Services.AddScoped<IProductOptionDALProvider, ProductOptionSqlProvider>();
-    builder.Services.AddScoped<IProductDALProvider, ProductSqlProvider>();
-    builder.Services.AddScoped<IUserDALProvider, UserSqlProvider>();
-}
-// - BL
-builder.Services.AddScoped<IProductOptionProvider, ProductOptionProvider>();
-builder.Services.AddScoped<IProductProvider, ProductProvider>();
-builder.Services.AddScoped<IUserProvider, UserProvider>();
-builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
-// - Tools
-builder.Services.AddScoped<IPasswordProvider, PasswordProvider>();
+// Setup DependencyInjection...
+builder.AddDependencyConfig();
 
 // Create our own validation filter to manually check modelstate and stop the automatic modelstate sending 400 responses for any validation failure
 builder.Services.AddScoped<ValidationFilterAttribute>();

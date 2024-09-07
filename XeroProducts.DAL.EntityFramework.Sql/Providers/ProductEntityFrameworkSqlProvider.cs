@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XeroProducts.DAL.EntityFramework.Sql.Contexts;
 using XeroProducts.DAL.Interfaces;
 using XeroProducts.Types;
@@ -12,7 +7,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
 {
     public class ProductEntityFrameworkSqlProvider : BaseEntityFrameworkSqlProvider, IProductDALProvider
     {
-        public ProductEntityFrameworkSqlProvider(IXeroProductsContext context) : base(context)
+        public ProductEntityFrameworkSqlProvider(Lazy<IXeroProductsContext> context) : base(context)
         {
 
         }
@@ -22,7 +17,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Product?> GetProduct(Guid id)
+        public virtual async Task<Product?> GetProduct(Guid id)
         {
             return await Context.Products.SingleOrDefaultAsync(p => p.Id == id);
         }
@@ -32,7 +27,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<Products> GetProducts(string name = "")
+        public virtual async Task<Products> GetProducts(string name = "")
         {
             var products = await Context.Products
                             .Where(p => p.Name.ToLower().Contains(name.Trim().ToLower()))
@@ -46,7 +41,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task<Guid> CreateProduct(Product product)
+        public virtual async Task<Guid> CreateProduct(Product product)
         {
             await Context.Products.AddAsync(product);
 
@@ -61,7 +56,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="product"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task UpdateProduct(Product product)
+        public virtual async Task UpdateProduct(Product product)
         {
             var dbProduct = await Context.Products.SingleOrDefaultAsync(p => p.Id == product.Id);
 
@@ -84,7 +79,7 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Providers
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public async Task DeleteProduct(Guid id)
+        public virtual async Task DeleteProduct(Guid id)
         {
             var product = await Context.Products.SingleOrDefaultAsync(p => p.Id == id);
 
