@@ -34,7 +34,10 @@ namespace XeroProducts.DAL.EntityFramework.Sql.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("Default"));
+            var connectionString = Configuration.GetConnectionString("Default")?
+                                    .Replace("{DataDirectory}", AppContext.BaseDirectory + "App_Data");
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

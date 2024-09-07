@@ -17,7 +17,7 @@ namespace XeroProducts.DAL.Sql.Providers
         public virtual SqlConnection NewConnection()
         {
             var connectionString = Configuration.GetConnectionString("Default")?
-                .Replace("{DataDirectory}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\App_Data");
+                                    .Replace("{DataDirectory}", AppContext.BaseDirectory + "App_Data");
 
             return new SqlConnection(connectionString);
         }
