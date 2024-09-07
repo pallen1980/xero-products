@@ -21,13 +21,13 @@ This improved version of the Web API retains the existing functionality to allow
 - Authorization: Some endpoints are now locked down unless signed-in/authed  
 - ORM support with EntityFramework: Greater DB abstraction, faster dev-time, and out-of-the-box support for more DB platforms  
 - Easy to understand fully-commented clean code  
-
+- Added SQL script for DB Creation & Data Population to support easier setup with external DBs
 
 ## Requirements:
 ----------------
 You'll need to install the following to build/run the solution...  
 1. .Net 8 SDK
-2. SQLClient
+2. SQLClient Driver compatible with SQL Server 2019 (v904) //The DB file has been updated and modified in SQL Server 2019, which means any future access must be by a SQL Client capable of opening DB files created in 2019/v904)
 
 ## Setup Guide:
 ---------------
@@ -47,6 +47,25 @@ By default, the Debug version of this project will build and run using the confi
 
 NOTE: When adding environment variables, you will need to restart Visual Studio and/or command prompt/powershell you were using to initiate this project (as these values are cached on startup).  
 
+## Optional Setup - SQL Database
+--------------------------------
+
+Rather than deploying the individual Database file (database.mdf) along with the solution, I have enclosed a SQL script that will allow you to setup your own DB on whatever DB provider you'd like.
+
+You'll need to run it as the "sa" account or another account with full admin rights.
+
+It will create the database, a login & user account, all tables and seed them with default data.
+
+Open the following script and run it on your SQL compatible database...
+
+SQL/XeroProduct - Create & Populate DB.sql
+
+You can then access the database with the following login account...
+
+user: XeroUser
+Pass: J3tP%ck!
+
+Note: You'll also find a script... TSQL Create Hashed Password.sql which will allow you to create your own hashed password, which you can replace the one in the script before running it.
 
 ## Release Notes: 
 -----------------
