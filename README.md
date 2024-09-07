@@ -27,12 +27,16 @@ This improved version of the Web API retains the existing functionality to allow
 ----------------
 You'll need to install the following to build/run the solution...  
 1. .Net 8 SDK
+2. SQLClient
 
 ## Setup Guide:
 ---------------
 1. Clone & Pull the Repo  
 2. Open a cmd prompt to the root folder  
 3. Run... Build Solution.bat  
+
+By default, the Debug version of this project will build and run using the configuration set up within the XeroProducts.Api\appsettings.Development.json file, but for Release deployment, you'll need to setup the following to secure the solution...
+
 4. Generate your own unique key (to secure Jwt Authentication), Run... Generate Key.bat
 5. Add the following environment variables (can be either User or System variables. Both will work)...  
   - XeroProducts__ConnectionString__Default = {DB connection string}  
@@ -66,4 +70,4 @@ NOTE: When adding environment variables, you will need to restart Visual Studio 
 20240906 - Added EntityFramework support to DAL providers  
 20240906 - Secured DAL connection strings to app-config/environment-variables  
 20240907 - Lazy-loading injected providers across all layers + accompanying refactoring  
-20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)  
+20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)
