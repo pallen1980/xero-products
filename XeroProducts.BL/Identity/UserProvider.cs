@@ -70,6 +70,12 @@ namespace XeroProducts.BL.Identity
                 throw new KeyNotFoundException($"Update Failed: No matching user found with ID {userDto.Id}");
             }
 
+            //dont allow the super admin to be updated
+            if (user.IsSuperAdmin)
+            {
+                throw new SuperAdminDeletionAttemptException("Update Failed: You cannot update the super admin account. This risks the system becoming un-usable.");
+            }
+
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
             user.Email = userDto.Email;
