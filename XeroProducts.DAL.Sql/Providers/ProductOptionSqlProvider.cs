@@ -22,7 +22,7 @@ namespace XeroProducts.DAL.Sql.Providers
 
                 if (!await rdr.ReadAsync())
                 {
-                    return new ProductOption()
+                    return new ProductOption(true)
                     {
                         Id = productOptionId
                     };
