@@ -11,7 +11,8 @@ This improved version of the Web API retains the existing functionality to allow
 - Central Validation/Exception handling to allow faster extensible development
 - Support for HTTPS for increased security  
 - Implemented MVVM & Repository Patterns for cleaner code design (Web API Front-End + BL mid-logic layer + DAL for data access)  
-- DI/IoC and Inheritance among providers for greater extensibility, modular/re-use (SOLID principles) & support for unit testing  
+- DI/IoC and Inheritance among providers for greater extensibility, modular/re-use (SOLID principles) & support for unit testing 
+- Lazy-loaded DI for improved initialisation performance and memory optimisation  
 - Covering Unit Tests across the BL to support CI/CD and QA processes/policies  
 - CI: Added GitHub Deployment action to build & test when any branch/PR are pushed into main  
 - Identity support via basic JWT tokens, to support distributed authentication  
@@ -64,3 +65,5 @@ You'll need to install the following to build/run the solution...
 20240906 - Added BL Dtos to replace Types in Web Endpoints  
 20240906 - Added EntityFramework support to DAL providers  
 20240906 - Secured DAL connection strings to app-config/environment-variables  
+20240907 - Lazy-loading injected providers across all layers + accompanying refactoring  
+20240907 - Removed unnecessary/out-of-date packages (reduced dependencies/enforced security)  
