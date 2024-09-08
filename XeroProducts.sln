@@ -33,12 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XeroProducts.KeyGeneration.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XeroProducts.DAL.EntityFramework.Sql", "XeroProducts.DAL.EntityFramework.Sql\XeroProducts.DAL.EntityFramework.Sql.csproj", "{B460BC17-EA7C-4BC3-9824-EAC9A630D44F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{E621C688-D7E6-4E19-A1BC-F7E788959BA4}"
-	ProjectSection(SolutionItems) = preProject
-		SQL\TSQL Create Hashed Password.sql = SQL\TSQL Create Hashed Password.sql
-		SQL\XeroProduct - Create & Populate DB.sql = SQL\XeroProduct - Create & Populate DB.sql
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
