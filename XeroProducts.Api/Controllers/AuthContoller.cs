@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Authentication against the system. Give this endpoint a username and password to generate a JWT token. 
+    /// Authenticate against the system. Give this endpoint a username and password to generate a JWT token. 
     /// The JWT token can then be used as the "Bearer: {token}" in the head of future requests against endpoints that require authentication
     /// </summary>
     /// <param name="userCredential"></param>
