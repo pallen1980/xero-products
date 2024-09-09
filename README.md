@@ -39,7 +39,7 @@ By default, the Debug version of this project will build and run using the confi
 
 4. Generate your own unique key (to secure Jwt Authentication), Run... Generate Key.bat
 5. Add the following environment variables (can be either User or System variables. Both will work)...  
-  - XeroProducts__ConnectionString__Default = {DB connection string}  
+  - XeroProducts__ConnectionStrings__Default = {DB connection string}  
   - XeroProducts__Auth__JwtConfig__Key = {YOUR_KEY_FROM_THE_PREVIOUS_STEP}  
   - XeroProducts__Auth__JwtConfig__ValidAudience = {YOUR_VALID_AUDIENCE_HOSTNAMERANGE} //eg. localhost:5000 or the domain(s)/host(s) you wish to allow  
   - XeroProducts__Auth__JwtConfig__ValidIssuer =  {YOU_VALID_ISSUER_HOSTNAME} //eg. localhost:5000 or the domain(s)/host(s) you wish to allow  
