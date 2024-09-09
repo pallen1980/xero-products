@@ -122,7 +122,7 @@ NOTE: running the solution in Debug/Development mode will enable Swagger and all
 
 I have set up a test server that will be accessible for a limited time. You can access the solution, which is set up in Debug/Development mode, with Swagger enabled, from the following url...  
 
-http://xero-products.duckdns.org (no ssl certificate is applied, so you'll need to ensure you access it at http://)  
+http://xeroproducts.eu-west-2.elasticbeanstalk.com (no ssl certificate is applied, so you'll need to ensure you access it at http://)  
 
 
 ## Release Notes
